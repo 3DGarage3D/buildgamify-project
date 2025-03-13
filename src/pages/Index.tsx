@@ -10,7 +10,6 @@ import {
   ChevronRight,
   BarChart3,
   Boxes,
-  Building,
   CalendarDays
 } from "lucide-react";
 import { 
@@ -24,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import ProjectCard from "@/components/project/ProjectCard";
 import TaskItem from "@/components/task/TaskItem";
+import NewProjectDialog from "@/components/project/NewProjectDialog";
 import { useStaggeredAnimation } from "@/utils/animation";
 
 // Define the task status and priority types
@@ -133,11 +133,16 @@ const recentTasks: Task[] = [
 
 const Index = () => {
   const [animate, setAnimate] = useState(false);
+  const [projects, setProjects] = useState(featuredProjects);
   const visibleStats = useStaggeredAnimation(stats.length, 100, 100);
   
   useEffect(() => {
     setAnimate(true);
   }, []);
+
+  const handleProjectCreated = (newProject: any) => {
+    setProjects(prev => [newProject, ...prev]);
+  };
   
   const dashboardLinks = [
     { name: "Projetos", icon: Briefcase, href: "/projects", description: "Gerenciar projetos ativos e arquivados" },
@@ -160,10 +165,7 @@ const Index = () => {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-          <Button className="gap-2">
-            <Building className="h-4 w-4" />
-            <span>Novo Projeto</span>
-          </Button>
+          <NewProjectDialog onProjectCreated={handleProjectCreated} />
         </div>
       </div>
       
@@ -244,7 +246,7 @@ const Index = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {featuredProjects.map((project) => (
+          {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </div>
