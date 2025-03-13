@@ -8,8 +8,7 @@ import {
   Users, 
   Trophy,
   Menu,
-  X,
-  Blocks
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -56,9 +55,11 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white">
-              <Blocks className="w-5 h-5" />
-            </div>
+            <img 
+              src="/lovable-uploads/207af5ae-c8be-4420-b695-f42f51561a8a.png" 
+              alt="3D Garage Logo" 
+              className="w-10 h-10 rounded-full"
+            />
             <span className="font-display font-semibold tracking-tight">
               TETRIS<span className="text-primary">BLOCK</span>
             </span>
