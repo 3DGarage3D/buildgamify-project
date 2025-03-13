@@ -26,6 +26,22 @@ import ProjectCard from "@/components/project/ProjectCard";
 import TaskItem from "@/components/task/TaskItem";
 import { useStaggeredAnimation } from "@/utils/animation";
 
+// Define the task status and priority types
+type TaskStatus = "pending" | "in-progress" | "completed";
+type TaskPriority = "low" | "medium" | "high";
+
+// Define the task interface
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  status: TaskStatus;
+  priority: TaskPriority;
+  dueDate: string;
+  points: number;
+  project?: string;
+}
+
 // Mock data
 const stats = [
   { 
@@ -85,7 +101,7 @@ const featuredProjects = [
   }
 ];
 
-const recentTasks = [
+const recentTasks: Task[] = [
   {
     id: "t1",
     title: "Revisão de projeto estrutural",
