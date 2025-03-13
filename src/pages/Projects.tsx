@@ -3,7 +3,6 @@ import { useState } from "react";
 import { 
   Briefcase, 
   Search, 
-  Plus, 
   Filter, 
   SlidersHorizontal,
   Check
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import ProjectCard from "@/components/project/ProjectCard";
+import NewProjectDialog from "@/components/project/NewProjectDialog";
 import { useStaggeredAnimation } from "@/utils/animation";
 
 // Mock data
@@ -113,13 +113,18 @@ const categories = [
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const visibleProjects = useStaggeredAnimation(projects.length, 100, 100);
+  const [projectsList, setProjectsList] = useState(projects);
+  const visibleProjects = useStaggeredAnimation(projectsList.length, 100, 100);
   
-  const filteredProjects = projects.filter(project => {
+  const filteredProjects = projectsList.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(project.category);
     return matchesSearch && matchesCategory;
   });
+
+  const handleProjectCreated = (newProject: any) => {
+    setProjectsList([newProject, ...projectsList]);
+  };
   
   return (
     <div className="space-y-8">
@@ -137,10 +142,7 @@ const Projects = () => {
             </p>
           </div>
         </div>
-        <Button className="gap-2">
-          <Plus className="h-4 w-4" />
-          <span>Novo Projeto</span>
-        </Button>
+        <NewProjectDialog onProjectCreated={handleProjectCreated} />
       </div>
       
       {/* Filters */}
