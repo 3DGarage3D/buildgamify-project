@@ -15,6 +15,9 @@ const Projects = lazy(() => import("./pages/Projects"));
 const Tasks = lazy(() => import("./pages/Tasks"));
 const Team = lazy(() => import("./pages/Team"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
+const Calendar = lazy(() => import("./pages/Calendar"));
+const Inventory = lazy(() => import("./pages/Inventory"));
+const Reports = lazy(() => import("./pages/Reports"));
 
 const queryClient = new QueryClient();
 
@@ -34,6 +37,9 @@ const App = () => (
                 <Route path="/tasks" element={<PageTransition><Tasks /></PageTransition>} />
                 <Route path="/team" element={<PageTransition><Team /></PageTransition>} />
                 <Route path="/leaderboard" element={<PageTransition><Leaderboard /></PageTransition>} />
+                <Route path="/calendar" element={<PageTransition><Calendar /></PageTransition>} />
+                <Route path="/inventory" element={<PageTransition><Inventory /></PageTransition>} />
+                <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

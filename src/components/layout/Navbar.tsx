@@ -8,7 +8,10 @@ import {
   Users, 
   Trophy,
   Menu,
-  X
+  X,
+  CalendarDays,
+  BarChart3,
+  Boxes
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -29,6 +32,9 @@ const Navbar = () => {
     { name: "Tarefas", href: "/tasks", icon: CheckSquare },
     { name: "Equipe", href: "/team", icon: Users },
     { name: "Classificação", href: "/leaderboard", icon: Trophy },
+    { name: "Calendário", href: "/calendar", icon: CalendarDays },
+    { name: "Estoque", href: "/inventory", icon: Boxes },
+    { name: "Relatórios", href: "/reports", icon: BarChart3 },
   ];
 
   const NavLink = ({ item }: { item: typeof navItems[0] }) => {
@@ -56,12 +62,12 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/207af5ae-c8be-4420-b695-f42f51561a8a.png" 
-              alt="3D Garage Logo" 
-              className="w-10 h-10 rounded-full"
+              src="/lovable-uploads/58b8e536-401c-4bd9-9fad-452ff0b1adea.png" 
+              alt="DP PAINELIZAÇÃO Logo" 
+              className="w-10 h-10"
             />
             <span className="font-display font-semibold tracking-tight">
-              TETRIS<span className="text-primary">BLOCK</span>
+              DP <span className="text-primary">PAINELIZAÇÃO</span>
             </span>
           </Link>
         </div>

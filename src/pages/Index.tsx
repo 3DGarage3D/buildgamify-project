@@ -49,28 +49,32 @@ const stats = [
     value: 12,
     icon: Briefcase,
     color: "text-blue-500",
-    bgColor: "bg-blue-100 dark:bg-blue-950/30"
+    bgColor: "bg-blue-100 dark:bg-blue-950/30",
+    route: "/projects"
   },
   { 
     title: "Tarefas concluídas", 
     value: 284,
     icon: CheckSquare,
     color: "text-emerald-500",
-    bgColor: "bg-emerald-100 dark:bg-emerald-950/30"
+    bgColor: "bg-emerald-100 dark:bg-emerald-950/30",
+    route: "/tasks"
   },
   { 
     title: "Membros da equipe", 
     value: 48,
     icon: Users,
     color: "text-violet-500",
-    bgColor: "bg-violet-100 dark:bg-violet-950/30"
+    bgColor: "bg-violet-100 dark:bg-violet-950/30",
+    route: "/team"
   },
   { 
     title: "Pontos acumulados", 
     value: 12750,
     icon: Trophy,
     color: "text-amber-500",
-    bgColor: "bg-amber-100 dark:bg-amber-950/30"
+    bgColor: "bg-amber-100 dark:bg-amber-950/30",
+    route: "/leaderboard"
   }
 ];
 
@@ -80,7 +84,7 @@ const featuredProjects = [
     title: "Residencial Villa Moderna",
     description: "Projeto de painelização para condomínio residencial com 24 unidades, incluindo otimização de corte e montagem.",
     progress: 65,
-    dueDate: "2023-07-15",
+    dueDate: "2025-07-15",
     teamSize: 12,
     tasks: {
       total: 48,
@@ -92,7 +96,7 @@ const featuredProjects = [
     title: "Centro Empresarial Horizonte",
     description: "Painelização para complexo comercial de 3 torres, com foco em eficiência energética e sustentabilidade.",
     progress: 42,
-    dueDate: "2023-08-30",
+    dueDate: "2025-08-30",
     teamSize: 18,
     tasks: {
       total: 56,
@@ -108,7 +112,7 @@ const recentTasks: Task[] = [
     description: "Analisar e validar os cálculos estruturais para os painéis do Bloco A do Residencial Villa Moderna.",
     status: "completed",
     priority: "high",
-    dueDate: "2023-06-10",
+    dueDate: "2025-06-10",
     points: 75
   },
   {
@@ -117,7 +121,7 @@ const recentTasks: Task[] = [
     description: "Criar cronograma detalhado para montagem dos painéis na obra, incluindo logística de transporte.",
     status: "in-progress",
     priority: "medium",
-    dueDate: "2023-06-15",
+    dueDate: "2025-06-15",
     points: 50
   },
   {
@@ -126,7 +130,7 @@ const recentTasks: Task[] = [
     description: "Enviar solicitação de compra para materiais do Centro Empresarial Horizonte - Fase 1.",
     status: "pending",
     priority: "high",
-    dueDate: "2023-06-08",
+    dueDate: "2025-06-08",
     points: 30
   }
 ];
@@ -149,8 +153,9 @@ const Index = () => {
     { name: "Tarefas", icon: CheckSquare, href: "/tasks", description: "Verificar tarefas e acompanhar progresso" },
     { name: "Equipe", icon: Users, href: "/team", description: "Visualizar membros da equipe e funções" },
     { name: "Classificação", icon: Trophy, href: "/leaderboard", description: "Conferir ranking e recompensas" },
-    { name: "Calendário", icon: CalendarDays, href: "/calendar", description: "Agendar eventos e prazos importantes" },
-    { name: "Relatórios", icon: BarChart3, href: "/reports", description: "Análise de desempenho e métricas" }
+    { name: "Calendário", icon: CalendarDays, href: "/calendar", description: "Acompanhar cronograma de produção" },
+    { name: "Estoque", icon: Boxes, href: "/inventory", description: "Gerenciar painéis e materiais" },
+    { name: "Relatórios", icon: BarChart3, href: "/reports", description: "Análise de produção e métricas" }
   ];
   
   return (
@@ -172,32 +177,38 @@ const Index = () => {
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
-          <Card 
+          <Link 
             key={stat.title}
-            className={`overflow-hidden ${visibleStats.includes(index) ? 'animate-scale' : 'opacity-0'}`}
+            to={stat.route}
+            className="group"
           >
-            <CardHeader className="pb-2">
-              <div className="flex justify-between items-start">
-                <div 
-                  className={`p-2 rounded-md ${stat.bgColor}`}
-                >
-                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
+            <Card 
+              className={`overflow-hidden group-hover:border-primary/50 transition-all ${visibleStats.includes(index) ? 'animate-scale' : 'opacity-0'}`}
+            >
+              <CardHeader className="pb-2">
+                <div className="flex justify-between items-start">
+                  <div 
+                    className={`p-2 rounded-md ${stat.bgColor}`}
+                  >
+                    <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold mb-1">
-                <AnimatedCounter 
-                  value={stat.value} 
-                  formatter={(val) => val.toLocaleString()} 
-                  duration={1500} 
-                />
-              </div>
-              <p className="text-muted-foreground text-sm">
-                {stat.title}
-              </p>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold mb-1">
+                  <AnimatedCounter 
+                    value={stat.value} 
+                    formatter={(val) => val.toLocaleString()} 
+                    duration={1500} 
+                  />
+                </div>
+                <p className="text-muted-foreground text-sm">
+                  {stat.title}
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
       
