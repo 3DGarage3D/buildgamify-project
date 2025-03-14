@@ -1,4 +1,3 @@
-
 import { 
   Card, 
   CardContent,
@@ -169,7 +168,7 @@ const PanelQueue = ({ date = new Date() }: PanelQueueProps) => {
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{mat.quantity}</span>
                           {!mat.available && (
-                            <Badge variant="outline" size="sm" className="text-xs border-amber-300 text-amber-600 dark:text-amber-400">
+                            <Badge variant="outline" className="text-xs border-amber-300 text-amber-600 dark:text-amber-400">
                               Indisponível
                             </Badge>
                           )}

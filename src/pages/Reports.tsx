@@ -117,6 +117,16 @@ const Reports = () => {
     to: new Date()
   });
 
+  // Create a custom bar component to handle the conditional coloring
+  const renderBarWithConditionalFill = (props: any) => {
+    const { x, y, width, height, variacao } = props;
+    
+    // Determine the fill color based on the variacao value
+    const fill = variacao >= 0 ? "#22c55e" : "#ef4444";
+    
+    return <rect x={x} y={y} width={width} height={height} fill={fill} />;
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -313,7 +323,19 @@ const Reports = () => {
                   <Bar 
                     dataKey="variacao" 
                     name="Variação (%)" 
-                    fill={(data) => data.variacao >= 0 ? "#22c55e" : "#ef4444"}
+                    fill="#22c55e"
+                    shape={(props) => {
+                      const { x, y, width, height, value } = props;
+                      return (
+                        <rect 
+                          x={x} 
+                          y={y} 
+                          width={width} 
+                          height={height} 
+                          fill={value >= 0 ? "#22c55e" : "#ef4444"} 
+                        />
+                      );
+                    }}
                   />
                 </BarChart>
               </ChartContainer>
