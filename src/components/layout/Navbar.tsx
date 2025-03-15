@@ -11,7 +11,8 @@ import {
   X,
   CalendarDays,
   BarChart3,
-  Boxes
+  Boxes,
+  FileSpreadsheet
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -34,6 +35,7 @@ const Navbar = () => {
     { name: "Classificação", href: "/leaderboard", icon: Trophy },
     { name: "Calendário", href: "/calendar", icon: CalendarDays },
     { name: "Estoque", href: "/inventory", icon: Boxes },
+    { name: "Orçamento", href: "/budget", icon: FileSpreadsheet },
     { name: "Relatórios", href: "/reports", icon: BarChart3 },
   ];
 
