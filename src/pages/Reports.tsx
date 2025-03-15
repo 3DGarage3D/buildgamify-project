@@ -21,7 +21,11 @@ import {
   CalendarDays,
   Package,
   LayoutDashboard,
-  RefreshCw
+  RefreshCw,
+  Activity,
+  Clock,
+  LineChart as LineChartIcon,
+  PercentSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -54,6 +58,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 // Mock data
 const reportsData = {
@@ -117,16 +122,6 @@ const Reports = () => {
     to: new Date()
   });
 
-  // Create a custom bar component to handle the conditional coloring
-  const renderBarWithConditionalFill = (props: any) => {
-    const { x, y, width, height, variacao } = props;
-    
-    // Determine the fill color based on the variacao value
-    const fill = variacao >= 0 ? "#22c55e" : "#ef4444";
-    
-    return <rect x={x} y={y} width={width} height={height} fill={fill} />;
-  };
-
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -170,7 +165,7 @@ const Reports = () => {
       
       {/* Abas de Relatórios */}
       <Tabs defaultValue="production" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="w-full grid grid-cols-3 mb-6">
           <TabsTrigger value="production" className="flex items-center gap-1">
             <LayoutDashboard className="h-4 w-4" />
             <span>Produção</span>
@@ -180,18 +175,21 @@ const Reports = () => {
             <span>Materiais</span>
           </TabsTrigger>
           <TabsTrigger value="efficiency" className="flex items-center gap-1">
-            <BarChart3 className="h-4 w-4" />
+            <Activity className="h-4 w-4" />
             <span>Eficiência</span>
           </TabsTrigger>
         </TabsList>
         
         {/* Tab de Produção */}
-        <TabsContent value="production" className="mt-4 space-y-6">
+        <TabsContent value="production" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Produção Mensal de Painéis</CardTitle>
-                <CardDescription>Quantidade de painéis produzidos por mês em 2025</CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <div className="space-y-1">
+                  <CardTitle className="text-lg">Produção Mensal de Painéis</CardTitle>
+                  <CardDescription>Quantidade de painéis produzidos por mês em 2025</CardDescription>
+                </div>
+                <AreaChart className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="h-80">
                 <ChartContainer
@@ -211,9 +209,12 @@ const Reports = () => {
             </Card>
             
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Tipos de Painéis Produzidos</CardTitle>
-                <CardDescription>Distribuição por tipo de painel</CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <div className="space-y-1">
+                  <CardTitle className="text-lg">Tipos de Painéis Produzidos</CardTitle>
+                  <CardDescription>Distribuição por tipo de painel</CardDescription>
+                </div>
+                <PercentSquare className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="h-80">
                 <ChartContainer
@@ -247,9 +248,12 @@ const Reports = () => {
           </div>
           
           <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Tempo Médio de Produção</CardTitle>
-              <CardDescription>Horas por painel por semana</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div className="space-y-1">
+                <CardTitle className="text-lg">Tempo Médio de Produção</CardTitle>
+                <CardDescription>Horas por painel por semana</CardDescription>
+              </div>
+              <Clock className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
               <ChartContainer
@@ -273,11 +277,14 @@ const Reports = () => {
         </TabsContent>
         
         {/* Tab de Materiais */}
-        <TabsContent value="materials" className="mt-4 space-y-6">
+        <TabsContent value="materials" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Consumo de Materiais</CardTitle>
-              <CardDescription>Comparação entre planejado e real</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div className="space-y-1">
+                <CardTitle className="text-lg">Consumo de Materiais</CardTitle>
+                <CardDescription>Comparação entre planejado e real</CardDescription>
+              </div>
+              <BarChart3 className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-96">
               <ChartContainer
@@ -300,21 +307,15 @@ const Reports = () => {
           </Card>
           
           <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Variação no Consumo de Materiais</CardTitle>
-              <CardDescription>Diferença percentual entre planejado e real</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div className="space-y-1">
+                <CardTitle className="text-lg">Variação no Consumo de Materiais</CardTitle>
+                <CardDescription>Diferença percentual entre planejado e real</CardDescription>
+              </div>
+              <LineChartIcon className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
-              <ChartContainer
-                config={{
-                  variacao: { 
-                    theme: {
-                      light: "#22c55e",
-                      dark: "#22c55e"
-                    }
-                  }
-                }}
-              >
+              <ChartContainer>
                 <BarChart data={reportsData.materialUsage}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
@@ -323,7 +324,6 @@ const Reports = () => {
                   <Bar 
                     dataKey="variacao" 
                     name="Variação (%)" 
-                    fill="#22c55e"
                     shape={(props) => {
                       const { x, y, width, height, value } = props;
                       return (
@@ -344,11 +344,14 @@ const Reports = () => {
         </TabsContent>
         
         {/* Tab de Eficiência */}
-        <TabsContent value="efficiency" className="mt-4 space-y-6">
+        <TabsContent value="efficiency" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Eficiência de Produção por Projeto</CardTitle>
-              <CardDescription>Quantidade de painéis: planejado vs. real</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div className="space-y-1">
+                <CardTitle className="text-lg">Eficiência de Produção por Projeto</CardTitle>
+                <CardDescription>Quantidade de painéis: planejado vs. real</CardDescription>
+              </div>
+              <BarChart3 className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
               <ChartContainer
@@ -371,9 +374,12 @@ const Reports = () => {
           </Card>
           
           <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Taxa de Eficiência</CardTitle>
-              <CardDescription>Percentual de eficiência por projeto</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div className="space-y-1">
+                <CardTitle className="text-lg">Taxa de Eficiência</CardTitle>
+                <CardDescription>Percentual de eficiência por projeto</CardDescription>
+              </div>
+              <Activity className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
               <ChartContainer
