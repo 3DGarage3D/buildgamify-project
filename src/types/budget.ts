@@ -113,3 +113,17 @@ export const PANEL_STAGE_DURATIONS: Record<PanelStage, number> = {
   'delivery': 4,
   'installation': 8
 };
+
+export interface MaterialUsageSummary {
+  name: string;
+  quantity: number;
+  unit: string;
+  percentage: number;
+  category: string;
+}
+
+export interface ProjectDistribution {
+  name: string;
+  value: number;
+  color?: string;
+}

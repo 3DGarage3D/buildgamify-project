@@ -1,8 +1,7 @@
 
 import { useState } from "react";
 import { 
-  Calendar as CalendarComponent,
-  CalendarProps 
+  Calendar as CalendarComponent
 } from "@/components/ui/calendar";
 import { 
   Card, 
@@ -18,14 +17,15 @@ import {
   TabsTrigger
 } from "@/components/ui/tabs";
 import {
-  ChevronRight,
   CalendarDays,
   Clock,
   Layers,
-  CheckSquare2
+  CheckSquare2,
+  CalendarClock,
+  Factory,
+  Truck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import PanelProductionSchedule from "@/components/calendar/PanelProductionSchedule";
 import PanelQueue from "@/components/calendar/PanelQueue";
 import MaterialsUsage from "@/components/calendar/MaterialsUsage";
@@ -39,10 +39,10 @@ const Calendar = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight font-display">
-            Calendário de Produção
+            Produção de Painéis
           </h1>
           <p className="text-muted-foreground">
-            Acompanhe o cronograma de produção dos painéis
+            Cronograma e acompanhamento da produção de painéis de concreto pré-moldado
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -74,7 +74,10 @@ const Calendar = () => {
         {/* Calendário lateral */}
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle className="text-lg">Selecionar Data</CardTitle>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <CalendarClock className="h-5 w-5 text-primary" />
+              Calendário
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <CalendarComponent
@@ -83,6 +86,41 @@ const Calendar = () => {
               onSelect={setDate}
               className="rounded-md border"
             />
+            
+            <div className="mt-4 space-y-3">
+              <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-md">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Factory className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <span className="font-medium text-sm">Produção hoje</span>
+                  </div>
+                  <span className="font-bold">12</span>
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">painéis em fabricação</div>
+              </div>
+              
+              <div className="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-md">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                    <span className="font-medium text-sm">Em cura</span>
+                  </div>
+                  <span className="font-bold">8</span>
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">painéis aguardando cura</div>
+              </div>
+              
+              <div className="p-3 bg-green-50 dark:bg-green-950/30 rounded-md">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Truck className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <span className="font-medium text-sm">Entrega</span>
+                  </div>
+                  <span className="font-bold">5</span>
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">painéis programados para entrega</div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -96,11 +134,11 @@ const Calendar = () => {
               </TabsTrigger>
               <TabsTrigger value="queue" className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />
-                <span>Fila</span>
+                <span>Fila e Cura</span>
               </TabsTrigger>
               <TabsTrigger value="materials" className="flex items-center gap-1">
                 <CheckSquare2 className="h-4 w-4" />
-                <span>Materiais</span>
+                <span>Consumo</span>
               </TabsTrigger>
             </TabsList>
             
