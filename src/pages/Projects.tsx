@@ -19,9 +19,10 @@ import { Badge } from "@/components/ui/badge";
 import ProjectCard from "@/components/project/ProjectCard";
 import NewProjectDialog from "@/components/project/NewProjectDialog";
 import { useStaggeredAnimation } from "@/utils/animation";
+import { Project } from "@/types/budget";
 
 // Mock data
-const projects = [
+const projects: Project[] = [
   {
     id: "1",
     title: "Residencial Villa Moderna",
@@ -33,7 +34,8 @@ const projects = [
       total: 48,
       completed: 31
     },
-    category: "Residencial"
+    category: "Residencial",
+    status: 'active'
   },
   {
     id: "2",
@@ -46,7 +48,8 @@ const projects = [
       total: 56,
       completed: 23
     },
-    category: "Comercial"
+    category: "Comercial",
+    status: 'active'
   },
   {
     id: "3",
@@ -59,7 +62,8 @@ const projects = [
       total: 72,
       completed: 63
     },
-    category: "Hospitalar"
+    category: "Hospitalar",
+    status: 'active'
   },
   {
     id: "4",
@@ -72,7 +76,8 @@ const projects = [
       total: 64,
       completed: 13
     },
-    category: "Comercial"
+    category: "Comercial",
+    status: 'active'
   },
   {
     id: "5",
@@ -85,7 +90,8 @@ const projects = [
       total: 96,
       completed: 52
     },
-    category: "Residencial"
+    category: "Residencial",
+    status: 'active'
   },
   {
     id: "6",
@@ -98,7 +104,8 @@ const projects = [
       total: 108,
       completed: 36
     },
-    category: "Industrial"
+    category: "Industrial",
+    status: 'active'
   }
 ];
 
