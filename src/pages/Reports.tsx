@@ -82,13 +82,13 @@ const reportsData = {
   
   // Consumo de materiais
   materialUsage: [
-    { name: "Perfil Metálico", planejado: 3800, real: 3920, variacao: 3.2 },
-    { name: "Parafusos", planejado: 24000, real: 25200, variacao: 5 },
-    { name: "Placa Cimentícia", planejado: 650, real: 680, variacao: 4.6 },
-    { name: "Placa de Gesso", planejado: 920, real: 890, variacao: -3.3 },
-    { name: "Isolamento", planejado: 580, real: 595, variacao: 2.6 },
-    { name: "Massa para Juntas", planejado: 240, real: 255, variacao: 6.3 },
-    { name: "Fita para Juntas", planejado: 1800, real: 1750, variacao: -2.8 }
+    { name: "Concreto (m³)", planejado: 380, real: 392, variacao: 3.2 },
+    { name: "Armação de Aço (kg)", planejado: 24000, real: 25200, variacao: 5 },
+    { name: "Formas Metálicas (un)", planejado: 650, real: 680, variacao: 4.6 },
+    { name: "Desmoldante (L)", planejado: 920, real: 890, variacao: -3.3 },
+    { name: "Espaçadores (un)", planejado: 5800, real: 5950, variacao: 2.6 },
+    { name: "Insertos (un)", planejado: 240, real: 255, variacao: 6.3 },
+    { name: "Barras de Ancoragem (un)", planejado: 1800, real: 1750, variacao: -2.8 }
   ],
   
   // Tipos de painéis produzidos
@@ -111,6 +111,16 @@ const reportsData = {
 };
 
 const COLORS = ['#3b82f6', '#22c55e', '#f97316', '#8b5cf6', '#f43f5e'];
+
+const chartConfig = {
+  panels: { color: "#3b82f6" },
+  planejado: { color: "#3b82f6" },
+  real: { color: "#f97316" },
+  meta: { color: "#f43f5e" },
+  tempo: { color: "#3b82f6" },
+  variacao: { color: "#22c55e" },
+  eficiencia: { color: "#f97316" }
+};
 
 const Reports = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -148,7 +158,7 @@ const Reports = () => {
                 selected={dateRange}
                 onSelect={(range) => range && setDateRange(range)}
                 numberOfMonths={2}
-                className="rounded-md border"
+                className="rounded-md border pointer-events-auto"
               />
             </PopoverContent>
           </Popover>
@@ -192,11 +202,7 @@ const Reports = () => {
                 <AreaChart className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="h-80">
-                <ChartContainer
-                  config={{
-                    panels: { color: "#3b82f6" }
-                  }}
-                >
+                <ChartContainer config={chartConfig}>
                   <AreaChartComponent data={reportsData.monthlyProduction}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
@@ -217,14 +223,7 @@ const Reports = () => {
                 <PercentSquare className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="h-80">
-                <ChartContainer
-                  config={{
-                    "Parede Interna": { color: "#3b82f6" },
-                    "Parede Externa": { color: "#22c55e" },
-                    "Fachada": { color: "#f97316" },
-                    "Divisória": { color: "#8b5cf6" },
-                  }}
-                >
+                <ChartContainer config={chartConfig}>
                   <PieChart>
                     <Pie
                       data={reportsData.panelTypes}
@@ -251,17 +250,12 @@ const Reports = () => {
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <div className="space-y-1">
                 <CardTitle className="text-lg">Tempo Médio de Produção</CardTitle>
-                <CardDescription>Horas por painel por semana</CardDescription>
+                <CardDescription>Horas por painel por semana vs meta estabelecida</CardDescription>
               </div>
               <Clock className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
-              <ChartContainer
-                config={{
-                  tempo: { color: "#3b82f6" },
-                  meta: { color: "#f43f5e" }
-                }}
-              >
+              <ChartContainer config={chartConfig}>
                 <LineChart data={reportsData.productionTime}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="semana" />
@@ -273,6 +267,9 @@ const Reports = () => {
                 </LineChart>
               </ChartContainer>
             </CardContent>
+            <CardFooter className="text-sm text-muted-foreground">
+              <p>Tempo médio atual: 38.2h por painel | Meta: 40h por painel | Desempenho: 104.7% acima da meta</p>
+            </CardFooter>
           </Card>
         </TabsContent>
         
@@ -281,22 +278,17 @@ const Reports = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <div className="space-y-1">
-                <CardTitle className="text-lg">Consumo de Materiais</CardTitle>
-                <CardDescription>Comparação entre planejado e real</CardDescription>
+                <CardTitle className="text-lg">Consumo de Materiais para Painéis</CardTitle>
+                <CardDescription>Comparação entre planejado e real (concreto, aço e outros)</CardDescription>
               </div>
               <BarChart3 className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-96">
-              <ChartContainer
-                config={{
-                  planejado: { color: "#3b82f6" },
-                  real: { color: "#f97316" }
-                }}
-              >
+              <ChartContainer config={chartConfig}>
                 <BarChart data={reportsData.materialUsage} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis type="number" />
-                  <YAxis type="category" dataKey="name" width={100} />
+                  <YAxis type="category" dataKey="name" width={150} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Legend />
                   <Bar dataKey="planejado" name="Planejado" fill="#3b82f6" />
@@ -304,6 +296,26 @@ const Reports = () => {
                 </BarChart>
               </ChartContainer>
             </CardContent>
+            <CardFooter>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                <div className="bg-muted/30 p-3 rounded-md">
+                  <h4 className="font-medium mb-2">Principais Materiais Utilizados</h4>
+                  <ul className="space-y-1 text-sm">
+                    <li className="flex justify-between"><span>Concreto Usinado (fck 40 MPa)</span><span>70% do volume</span></li>
+                    <li className="flex justify-between"><span>Aço CA-50</span><span>25% do peso</span></li>
+                    <li className="flex justify-between"><span>Aço CA-60</span><span>5% do peso</span></li>
+                  </ul>
+                </div>
+                <div className="bg-muted/30 p-3 rounded-md">
+                  <h4 className="font-medium mb-2">Taxas de Consumo (por m² de painel)</h4>
+                  <ul className="space-y-1 text-sm">
+                    <li className="flex justify-between"><span>Concreto</span><span>0.12 m³/m²</span></li>
+                    <li className="flex justify-between"><span>Aço</span><span>12.5 kg/m²</span></li>
+                    <li className="flex justify-between"><span>Insertos</span><span>0.8 un/m²</span></li>
+                  </ul>
+                </div>
+              </div>
+            </CardFooter>
           </Card>
           
           <Card>
@@ -315,11 +327,11 @@ const Reports = () => {
               <LineChartIcon className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
-              <ChartContainer>
+              <ChartContainer config={chartConfig}>
                 <BarChart data={reportsData.materialUsage}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis />
+                  <YAxis domain={[-10, 10]} ticks={[-10, -5, 0, 5, 10]} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar 
                     dataKey="variacao" 
@@ -340,6 +352,9 @@ const Reports = () => {
                 </BarChart>
               </ChartContainer>
             </CardContent>
+            <CardFooter className="text-sm text-muted-foreground">
+              <p>Variação média: +2.1% acima do planejado | Concreto: +3.2% | Aço: +5.0% | Economia em desmoldante: -3.3%</p>
+            </CardFooter>
           </Card>
         </TabsContent>
         
@@ -354,12 +369,7 @@ const Reports = () => {
               <BarChart3 className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
-              <ChartContainer
-                config={{
-                  planejado: { color: "#3b82f6" },
-                  real: { color: "#22c55e" }
-                }}
-              >
+              <ChartContainer config={chartConfig}>
                 <BarChart data={reportsData.efficiency}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="projeto" />
@@ -371,6 +381,9 @@ const Reports = () => {
                 </BarChart>
               </ChartContainer>
             </CardContent>
+            <CardFooter className="text-sm text-muted-foreground">
+              <p>Total planejado: 310 painéis | Total produzido: 289 painéis | Eficiência global: 93.2%</p>
+            </CardFooter>
           </Card>
           
           <Card>
@@ -382,20 +395,41 @@ const Reports = () => {
               <Activity className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="h-80">
-              <ChartContainer
-                config={{
-                  eficiencia: { color: "#f97316" }
-                }}
-              >
+              <ChartContainer config={chartConfig}>
                 <BarChart data={reportsData.efficiency}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="projeto" />
-                  <YAxis domain={[80, 100]} />
+                  <YAxis domain={[80, 100]} ticks={[80, 85, 90, 95, 100]} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="eficiencia" name="Eficiência (%)" fill="#f97316" />
                 </BarChart>
               </ChartContainer>
             </CardContent>
+            <CardFooter>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full text-sm">
+                <div className="bg-green-50 dark:bg-green-950/30 p-3 rounded-md">
+                  <h4 className="font-medium mb-1 flex items-center gap-1">
+                    <Activity className="h-4 w-4 text-green-600" />
+                    Projeto mais eficiente
+                  </h4>
+                  <p>Residencial Villa Moderna: 95.8%</p>
+                </div>
+                <div className="bg-amber-50 dark:bg-amber-950/30 p-3 rounded-md">
+                  <h4 className="font-medium mb-1 flex items-center gap-1">
+                    <Activity className="h-4 w-4 text-amber-600" />
+                    Média de eficiência
+                  </h4>
+                  <p>Todos os projetos: 92.5%</p>
+                </div>
+                <div className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md">
+                  <h4 className="font-medium mb-1 flex items-center gap-1">
+                    <Activity className="h-4 w-4 text-blue-600" />
+                    Meta estabelecida
+                  </h4>
+                  <p>Eficiência de produção: 95%</p>
+                </div>
+              </div>
+            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

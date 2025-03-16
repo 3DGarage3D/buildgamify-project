@@ -127,3 +127,7 @@ export interface ProjectDistribution {
   value: number;
   color?: string;
 }
+
+export interface ChartConfig {
+  [key: string]: { color: string };
+}
