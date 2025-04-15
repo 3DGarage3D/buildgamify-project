@@ -20,6 +20,7 @@ import ProjectCard from "@/components/project/ProjectCard";
 import NewProjectDialog from "@/components/project/NewProjectDialog";
 import { useStaggeredAnimation } from "@/utils/animation";
 import { Project } from "@/types/budget";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Mock data
 const projects: Project[] = [
@@ -122,6 +123,7 @@ const Projects = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [projectsList, setProjectsList] = useState(projects);
   const visibleProjects = useStaggeredAnimation(projectsList.length, 100, 100);
+  const isMobile = useIsMobile();
   
   const filteredProjects = projectsList.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -134,17 +136,17 @@ const Projects = () => {
   };
   
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <div className="p-2 rounded-md bg-primary/10 text-primary">
             <Briefcase className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight font-display">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-display">
               Projetos
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-sm md:text-base text-muted-foreground">
               Gerencie e acompanhe seus projetos
             </p>
           </div>
@@ -153,22 +155,22 @@ const Projects = () => {
       </div>
       
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
+      <div className="flex flex-col gap-4">
+        <div className="relative w-full">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Buscar projetos..."
-            className="pl-9"
+            className="pl-9 w-full"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap justify-between">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" className="gap-2 w-full sm:w-auto mb-2 sm:mb-0">
                 <Filter className="h-4 w-4" />
-                <span className="hidden sm:inline">Categorias</span>
+                <span className="inline">Categorias</span>
                 {selectedCategories.length > 0 && (
                   <Badge variant="secondary" className="ml-1 px-1.5">
                     {selectedCategories.length}
@@ -176,7 +178,7 @@ const Projects = () => {
                 )}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align={isMobile ? "center" : "end"} className="w-56">
               {categories.map((category) => (
                 <DropdownMenuCheckboxItem
                   key={category}
@@ -195,16 +197,16 @@ const Projects = () => {
             </DropdownMenuContent>
           </DropdownMenu>
           
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2 w-full sm:w-auto">
             <SlidersHorizontal className="h-4 w-4" />
-            <span className="hidden sm:inline">Ordenar</span>
+            <span className="inline">Ordenar</span>
           </Button>
         </div>
       </div>
       
       {/* Projects Grid */}
       {filteredProjects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {filteredProjects.map((project, index) => (
             <ProjectCard 
               key={project.id} 
@@ -214,7 +216,7 @@ const Projects = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center p-12 text-center">
+        <div className="flex flex-col items-center justify-center p-6 md:p-12 text-center">
           <div className="rounded-full bg-muted p-4 mb-4">
             <Briefcase className="h-6 w-6 text-muted-foreground" />
           </div>
