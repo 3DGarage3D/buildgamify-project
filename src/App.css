@@ -75,3 +75,37 @@ html, body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Chart optimizations for mobile */
+.recharts-wrapper {
+  max-width: 100%;
+  height: auto !important;
+  min-height: 250px;
+}
+
+.recharts-surface {
+  overflow: visible;
+}
+
+/* Responsive card content */
+.card-content-responsive {
+  height: 280px;
+}
+
+@media (min-width: 640px) {
+  .card-content-responsive {
+    height: 320px;
+  }
+}
+
+/* Better mobile tooltips */
+.recharts-tooltip-wrapper {
+  z-index: 999 !important;
+}
+
+/* Ensure data tables are scrollable on mobile */
+.data-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
