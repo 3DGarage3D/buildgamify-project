@@ -1,6 +1,5 @@
 
-import { useState, useEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
+import React, { useState, useEffect } from 'react';
 
 interface AnimatedCounterProps {
   value: number;
@@ -15,57 +14,45 @@ const AnimatedCounter = ({
   formatter = (val) => val.toString(),
   className
 }: AnimatedCounterProps) => {
-  const [displayValue, setDisplayValue] = useState(0);
-  const startTimeRef = useRef<number | null>(null);
-  const startValueRef = useRef<number>(0);
-  const frameRef = useRef<number | null>(null);
-
+  const [count, setCount] = useState(0);
+  
   useEffect(() => {
-    startValueRef.current = displayValue;
-    startTimeRef.current = null;
+    let startTime: number;
+    let animationFrame: number;
     
-    if (frameRef.current) {
-      cancelAnimationFrame(frameRef.current);
-    }
-    
-    const animate = (timestamp: number) => {
-      if (!startTimeRef.current) {
-        startTimeRef.current = timestamp;
-      }
+    const updateCount = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
       
-      const elapsedTime = timestamp - startTimeRef.current;
-      const progress = Math.min(elapsedTime / duration, 1);
+      // Easing function for smooth animation
+      const easeOutQuad = (t: number) => t * (2 - t);
+      const progressRatio = Math.min(easeOutQuad(progress / duration), 1);
       
-      // Easing function for smoother animation
-      const easedProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setCount(Math.floor(progressRatio * value));
       
-      const currentValue = Math.floor(
-        startValueRef.current + (value - startValueRef.current) * easedProgress
-      );
-      
-      setDisplayValue(currentValue);
-      
-      if (progress < 1) {
-        frameRef.current = requestAnimationFrame(animate);
+      if (progress < duration) {
+        animationFrame = requestAnimationFrame(updateCount);
+      } else {
+        setCount(value);
       }
     };
     
-    frameRef.current = requestAnimationFrame(animate);
+    // Don't animate small values
+    if (value <= 10) {
+      setCount(value);
+      return;
+    }
+    
+    animationFrame = requestAnimationFrame(updateCount);
     
     return () => {
-      if (frameRef.current) {
-        cancelAnimationFrame(frameRef.current);
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
       }
     };
   }, [value, duration]);
-
-  const formattedValue = formatter(displayValue);
   
-  return (
-    <span className={cn("font-mono tabular-nums", className)}>
-      {formattedValue}
-    </span>
-  );
+  return <span className={className}>{formatter(count)}</span>;
 };
 
 export default AnimatedCounter;
