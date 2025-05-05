@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Card, 
   CardContent, 
@@ -8,9 +8,10 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, List, FileSpreadsheet } from "lucide-react";
+import { DollarSign, List, FileSpreadsheet, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { MaterialItem, Budget } from "@/types/budget";
+import { Button } from "@/components/ui/button";
 
 // Budget Components
 import ImportForm from "@/components/budget/ImportForm";
@@ -18,6 +19,7 @@ import MaterialsTable from "@/components/budget/MaterialsTable";
 import FilterBar from "@/components/budget/FilterBar";
 import BudgetVisualizer from "@/components/budget/BudgetVisualizer";
 import NewBudgetDialog from "@/components/budget/NewBudgetDialog";
+import MaterialSearchBox from "@/components/budget/MaterialSearchBox";
 
 const BudgetPage = () => {
   const [materials, setMaterials] = useState<MaterialItem[]>([]);
@@ -29,6 +31,7 @@ const BudgetPage = () => {
   const { toast } = useToast();
   
   const unidades = Array.from(new Set(materials.map(item => item.unidade))).sort();
+  const categorias = Array.from(new Set(materials.map(item => item.categoria || "Geral"))).sort();
   
   const handleImport = (importedMaterials: MaterialItem[]) => {
     setMaterials(importedMaterials);
@@ -84,6 +87,34 @@ const BudgetPage = () => {
       description: `O orçamento "${name}" foi criado com sucesso.`,
     });
   };
+
+  const handleBackToBudgetList = () => {
+    setActiveBudget(null);
+  };
+
+  // Save to localStorage when budgets change
+  useEffect(() => {
+    if (budgets.length > 0) {
+      localStorage.setItem('projectBudgets', JSON.stringify(budgets));
+    }
+  }, [budgets]);
+
+  // Load from localStorage on initial render
+  useEffect(() => {
+    const savedBudgets = localStorage.getItem('projectBudgets');
+    if (savedBudgets) {
+      try {
+        const parsed = JSON.parse(savedBudgets);
+        setBudgets(parsed.map((budget: any) => ({
+          ...budget,
+          createdAt: new Date(budget.createdAt),
+          updatedAt: new Date(budget.updatedAt)
+        })));
+      } catch (e) {
+        console.error('Failed to parse saved budgets', e);
+      }
+    }
+  }, []);
   
   return (
     <div className="space-y-6">
@@ -125,6 +156,7 @@ const BudgetPage = () => {
                   searchTerm={searchTerm}
                   selectedUnidade={selectedUnidade}
                   unidades={unidades}
+                  categorias={categorias}
                   onSearch={handleSearch}
                   onUnidadeChange={handleUnidadeChange}
                 />
@@ -144,10 +176,23 @@ const BudgetPage = () => {
         
         <TabsContent value="budgets" className="py-4">
           {activeBudget ? (
-            <BudgetVisualizer 
-              materials={materials}
-              projectName={activeBudget.name}
-            />
+            <>
+              <div className="mb-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBackToBudgetList}
+                  className="flex items-center gap-2"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Voltar para lista</span>
+                </Button>
+              </div>
+              <BudgetVisualizer 
+                materials={materials}
+                projectName={activeBudget.name}
+              />
+            </>
           ) : (
             <Card>
               <CardHeader>
@@ -174,7 +219,6 @@ const BudgetPage = () => {
             </Card>
           )}
           
-          {/* If there is an active budget, we'll already be showing the BudgetVisualizer component */}
           {budgets.length > 0 && !activeBudget && (
             <div className="mt-6">
               <h3 className="text-lg font-medium mb-4">Orçamentos Existentes</h3>

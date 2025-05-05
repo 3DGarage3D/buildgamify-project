@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { 
   Card,
@@ -50,7 +51,8 @@ import {
   Maximize2,
   Minimize2,
   RotateCcw,
-  Copy
+  Copy,
+  Search
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -61,6 +63,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import MaterialSearchBox from "./MaterialSearchBox";
 
 interface BudgetVisualizerProps {
   materials: MaterialItem[];
@@ -78,6 +81,8 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeView, setActiveView] = useState<"visual" | "list">("visual");
+  const [filteredMaterials, setFilteredMaterials] = useState<MaterialItem[]>(materials.slice(0, 10));
+  const [materialSearch, setMaterialSearch] = useState("");
   const { toast } = useToast();
   
   const form = useForm<z.infer<typeof projectSchema>>({
@@ -102,6 +107,15 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
       toast({
         title: "Item adicionado",
         description: `${item.descricao} adicionado ao orçamento.`,
+      });
+    } else {
+      // If already added, increment quantity
+      const currentQuantity = quantities[item.id] || 1;
+      setQuantities({ ...quantities, [item.id]: currentQuantity + 1 });
+      
+      toast({
+        title: "Quantidade atualizada",
+        description: `Quantidade de ${item.descricao} aumentada para ${currentQuantity + 1}.`,
       });
     }
   };
@@ -157,6 +171,21 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
+
+  const handleSearchMaterials = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    setMaterialSearch(query);
+    
+    if (query) {
+      const filtered = materials.filter(item => 
+        item.descricao.toLowerCase().includes(query) || 
+        item.codigo.toLowerCase().includes(query)
+      ).slice(0, 10);
+      setFilteredMaterials(filtered);
+    } else {
+      setFilteredMaterials(materials.slice(0, 10));
+    }
+  };
   
   // Dados para o gráfico de categorias
   const categoryData = Object.entries(
@@ -195,8 +224,9 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
         <div className="space-y-2">
           <div className="flex justify-between items-start">
             <div>
+              <div className="text-xs font-mono text-muted-foreground mb-1">{item.codigo}</div>
               <Badge variant="outline" className="bg-primary/10">
-                {item.categoria}
+                {item.categoria || "Outros"}
               </Badge>
               <h4 className="text-sm font-medium mt-2 line-clamp-2">{item.descricao}</h4>
             </div>
@@ -256,7 +286,7 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
           </p>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 justify-end">
           <Button variant="outline" size="sm" onClick={handleSave}>
             <Save className="mr-2 h-4 w-4" />
             Salvar
@@ -330,6 +360,7 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead>Código</TableHead>
                         <TableHead>Descrição</TableHead>
                         <TableHead>Unidade</TableHead>
                         <TableHead>Categoria</TableHead>
@@ -345,11 +376,12 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
                           const quantity = quantities[item.id] || 1;
                           return (
                             <TableRow key={item.id}>
+                              <TableCell className="font-mono text-xs">{item.codigo}</TableCell>
                               <TableCell className="font-medium">{item.descricao}</TableCell>
                               <TableCell>{item.unidade}</TableCell>
                               <TableCell>
                                 <Badge variant="outline" className="bg-primary/10">
-                                  {item.categoria}
+                                  {item.categoria || "Outros"}
                                 </Badge>
                               </TableCell>
                               <TableCell>
@@ -407,7 +439,7 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
                         })
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={7} className="h-24 text-center">
+                          <TableCell colSpan={8} className="h-24 text-center">
                             Nenhum item adicionado ao orçamento.
                           </TableCell>
                         </TableRow>
@@ -519,19 +551,21 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Input 
-                  placeholder="Buscar material..." 
-                  className="mb-4"
+                <MaterialSearchBox 
+                  materials={materials}
+                  onSelectMaterial={addItem}
+                  placeholder="Buscar material por código ou descrição..."
                 />
                 
                 <div className="max-h-[400px] overflow-y-auto border rounded-md divide-y">
-                  {materials.slice(0, 10).map((item) => (
+                  {filteredMaterials.map((item) => (
                     <div key={item.id} className="p-3 hover:bg-muted/50">
                       <div className="flex justify-between items-start">
                         <div>
+                          <div className="font-mono text-xs text-muted-foreground mb-1">{item.codigo}</div>
                           <div className="font-medium line-clamp-2">{item.descricao}</div>
                           <div className="text-xs text-muted-foreground mt-1">
-                            {item.codigo} • {item.unidade}
+                            {item.unidade}
                           </div>
                         </div>
                         <Button 
@@ -545,7 +579,7 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
                       </div>
                       <div className="flex justify-between items-center mt-2">
                         <Badge variant="outline" className="bg-primary/10">
-                          {item.categoria}
+                          {item.categoria || "Outros"}
                         </Badge>
                         <span className="font-medium">
                           R$ {item.preco.toLocaleString('pt-BR', {
@@ -558,9 +592,9 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
                   ))}
                 </div>
                 
-                {materials.length > 10 && (
+                {materials.length > filteredMaterials.length && (
                   <div className="text-center pt-2">
-                    <Button variant="link" size="sm">
+                    <Button variant="link" size="sm" onClick={() => setFilteredMaterials(materials.slice(0, 20))}>
                       Ver mais materiais
                     </Button>
                   </div>
