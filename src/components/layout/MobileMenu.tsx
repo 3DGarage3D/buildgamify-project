@@ -51,7 +51,7 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
       items: [
         { name: "Dashboard", href: "/", icon: LayoutDashboard },
         { name: "Projetos", href: "/projects", icon: Briefcase },
-        { name: "Tarefas", href: "/tasks", icon: CheckSquare },
+        { name: "Tarefas", href: "/tasks", icon: CheckSquare, badge: "12" },
       ]
     },
     {
@@ -73,7 +73,7 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
   ];
 
   // Versão para menu lateral do NavLink
-  const SidebarNavLink = ({ item }: { item: { name: string; href: string; icon: React.ElementType } }) => {
+  const SidebarNavLink = ({ item }: { item: { name: string; href: string; icon: React.ElementType; badge?: string } }) => {
     const isActive = location.pathname === item.href;
     return (
       <SheetClose asChild>
@@ -81,7 +81,7 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
           to={item.href}
           className={cn(
             "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
-            "hover:bg-secondary focus-ring",
+            "hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             isActive 
               ? "bg-secondary/70 text-primary font-medium" 
               : "text-foreground/70 hover:text-foreground"
@@ -89,8 +89,8 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
         >
           <item.icon className="w-5 h-5" />
           <span>{item.name}</span>
-          {item.name === "Tarefas" && (
-            <Badge className="ml-auto bg-primary/15 text-primary hover:bg-primary/20 dark:bg-primary/30">12</Badge>
+          {item.badge && (
+            <Badge className="ml-auto bg-primary/15 text-primary hover:bg-primary/20 dark:bg-primary/30">{item.badge}</Badge>
           )}
         </Link>
       </SheetClose>
@@ -106,13 +106,21 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm p-0">
+      <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm p-0 focus:outline-none">
         <div className="h-full flex flex-col">
           <SheetHeader className="p-4 text-left border-b">
-            <SheetTitle>Menu Principal</SheetTitle>
-            <SheetDescription>
-              Acesse todas as funcionalidades do sistema
-            </SheetDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <SheetTitle>Menu Principal</SheetTitle>
+                <SheetDescription>
+                  Acesse todas as funcionalidades do sistema
+                </SheetDescription>
+              </div>
+              <SheetClose className="rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+                <X className="h-4 w-4" />
+                <span className="sr-only">Fechar</span>
+              </SheetClose>
+            </div>
           </SheetHeader>
           
           <div className="flex flex-col gap-1 p-4 overflow-y-auto flex-1">
@@ -141,7 +149,7 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
                   <p className="text-sm font-medium">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.role}</p>
                 </div>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="h-8 w-8">
                   <LogOut className="h-4 w-4" />
                 </Button>
               </div>

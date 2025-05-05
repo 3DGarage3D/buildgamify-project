@@ -41,17 +41,33 @@ input, select, textarea {
   font-size: 16px !important; /* Prevents iOS zoom on focus */
 }
 
-/* Ensure all clickable elements have sufficient touch targets */
-button, a, input[type="checkbox"], input[type="radio"] {
-  min-height: 44px;
-  min-width: 44px;
-}
-
 /* Only apply custom touch targets on mobile */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   button, a, input[type="checkbox"], input[type="radio"] {
-    min-height: initial;
-    min-width: initial;
+    min-height: 36px;
+    min-width: 36px;
+  }
+  
+  /* Fix for tabs on mobile */
+  .tabs-scrollable {
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding-bottom: 4px;
+  }
+  
+  .tabs-scrollable::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  /* Prevent buttons from being too small on mobile */
+  .btn-mobile-full {
+    width: 100%;
+  }
+  
+  /* Fix card layouts on mobile */
+  .card-grid-mobile {
+    grid-template-columns: 1fr !important;
   }
 }
 
@@ -87,6 +103,23 @@ html, body {
   overflow: visible;
 }
 
+.recharts-responsive-container {
+  width: 100% !important;
+  min-height: 300px;
+}
+
+/* On mobile, make charts more compact */
+@media (max-width: 640px) {
+  .recharts-wrapper {
+    font-size: 10px;
+    min-height: 200px;
+  }
+  
+  .recharts-text {
+    font-size: 10px;
+  }
+}
+
 /* Responsive card content */
 .card-content-responsive {
   height: 280px;
@@ -108,4 +141,53 @@ html, body {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Fix for tab content on mobile */
+.tab-content-mobile {
+  padding: 0.5rem !important;
+}
+
+/* Fix for card spacing on mobile */
+@media (max-width: 640px) {
+  .card-stack-mobile > * + * {
+    margin-top: 1rem;
+  }
+  
+  .grid-gap-mobile {
+    gap: 0.75rem !important;
+  }
+}
+
+/* Optimize tab display on mobile */
+@media (max-width: 640px) {
+  .tabs-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .tab-button {
+    white-space: nowrap;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Better focus states for accessibility */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Fix for chart legends on mobile */
+@media (max-width: 640px) {
+  .recharts-default-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .recharts-legend-item {
+    margin: 0 4px !important;
+  }
 }

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -173,7 +174,9 @@ export const chartConfig = {
     color: "#f97316"
   }
 };
+
 export const COLORS = ['#3b82f6', '#22c55e', '#f97316', '#8b5cf6', '#f43f5e'];
+
 const Reports = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [dateRange, setDateRange] = useState<{
@@ -183,7 +186,9 @@ const Reports = () => {
     from: new Date(2025, 0, 1),
     to: new Date()
   });
-  return <div className="space-y-6">
+  
+  return (
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-display">
@@ -202,7 +207,14 @@ const Reports = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="end">
-              <Calendar mode="range" defaultMonth={dateRange.from} selected={dateRange} onSelect={range => range && setDateRange(range)} numberOfMonths={1} className="rounded-md border pointer-events-auto" />
+              <Calendar 
+                mode="range" 
+                defaultMonth={dateRange.from} 
+                selected={dateRange} 
+                onSelect={range => range && setDateRange(range)} 
+                numberOfMonths={1} 
+                className="rounded-md border pointer-events-auto" 
+              />
             </PopoverContent>
           </Popover>
           <div className="flex gap-2">
@@ -219,37 +231,53 @@ const Reports = () => {
       </div>
       
       {/* Abas de Relatórios */}
-      <Tabs defaultValue="production" className="w-full mx-[13px]">
-        <TabsList className="w-full grid grid-cols-3 mb-4">
-          <TabsTrigger value="production" className="flex items-center gap-1">
-            <LayoutDashboard className="h-4 w-4" />
-            <span>Produção</span>
-          </TabsTrigger>
-          <TabsTrigger value="materials" className="flex items-center gap-1">
-            <Package className="h-4 w-4" />
-            <span>Materiais</span>
-          </TabsTrigger>
-          <TabsTrigger value="efficiency" className="flex items-center gap-1">
-            <Activity className="h-4 w-4" />
-            <span>Eficiência</span>
-          </TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="production" className="w-full">
+        <div className="tabs-container">
+          <TabsList className="w-full grid grid-cols-3 mb-4 tabs-scrollable">
+            <TabsTrigger value="production" className="flex items-center gap-1 tab-button">
+              <LayoutDashboard className="h-4 w-4" />
+              <span>Produção</span>
+            </TabsTrigger>
+            <TabsTrigger value="materials" className="flex items-center gap-1 tab-button">
+              <Package className="h-4 w-4" />
+              <span>Materiais</span>
+            </TabsTrigger>
+            <TabsTrigger value="efficiency" className="flex items-center gap-1 tab-button">
+              <Activity className="h-4 w-4" />
+              <span>Eficiência</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
         
         {/* Tab de Produção */}
-        <TabsContent value="production">
-          <ReportsProductionSection monthlyProduction={reportsData.monthlyProduction} panelTypes={reportsData.panelTypes} productionTime={reportsData.productionTime} chartConfig={chartConfig} colors={COLORS} />
+        <TabsContent value="production" className="tab-content-mobile">
+          <ReportsProductionSection 
+            monthlyProduction={reportsData.monthlyProduction} 
+            panelTypes={reportsData.panelTypes} 
+            productionTime={reportsData.productionTime} 
+            chartConfig={chartConfig} 
+            colors={COLORS} 
+          />
         </TabsContent>
         
         {/* Tab de Materiais */}
-        <TabsContent value="materials">
-          <ReportsMaterialsSection materialUsage={reportsData.materialUsage} chartConfig={chartConfig} />
+        <TabsContent value="materials" className="tab-content-mobile">
+          <ReportsMaterialsSection 
+            materialUsage={reportsData.materialUsage} 
+            chartConfig={chartConfig} 
+          />
         </TabsContent>
         
         {/* Tab de Eficiência */}
-        <TabsContent value="efficiency">
-          <ReportsEfficiencySection efficiency={reportsData.efficiency} chartConfig={chartConfig} />
+        <TabsContent value="efficiency" className="tab-content-mobile">
+          <ReportsEfficiencySection 
+            efficiency={reportsData.efficiency} 
+            chartConfig={chartConfig} 
+          />
         </TabsContent>
       </Tabs>
-    </div>;
+    </div>
+  );
 };
+
 export default Reports;
