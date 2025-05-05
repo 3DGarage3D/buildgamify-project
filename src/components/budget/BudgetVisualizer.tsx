@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { 
   Card,
@@ -174,7 +173,7 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
   // Cores para o gráfico
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FF6B6B'];
 
-  // Item template para o modo visual
+  // Item template for the visual mode
   const renderMaterialCard = (item: MaterialItem) => {
     const quantity = quantities[item.id] || 1;
     return (
@@ -449,27 +448,34 @@ const BudgetVisualizer = ({ materials, projectName = "Novo Projeto" }: BudgetVis
               {selectedItems.length > 0 ? (
                 <div className="space-y-6">
                   <div className="h-[200px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={categoryData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={80}
-                          paddingAngle={2}
-                          dataKey="value"
-                          nameKey="name"
-                          label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
-                          labelLine={false}
-                        >
-                          {categoryData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <ChartTooltip content={<ChartTooltipContent formatter={(value) => `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`} />} />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <ChartContainer
+                      config={{
+                        name: { color: "#000" },
+                        value: { color: "#3b82f6" }
+                      }}
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={categoryData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={80}
+                            paddingAngle={2}
+                            dataKey="value"
+                            nameKey="name"
+                            label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            labelLine={false}
+                          >
+                            {categoryData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                          </Pie>
+                          <ChartTooltip content={<ChartTooltipContent formatter={(value) => `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`} />} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
                   </div>
                   
                   <div className="grid gap-4">
