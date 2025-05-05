@@ -76,26 +76,30 @@ const ReportsProductionSection: React.FC<ReportsProductionSectionProps> = ({
             </div>
             <AreaChart className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="h-[250px] sm:h-[300px]">
-            <ChartContainer config={chartConfig}>
-              <AreaChartComponent 
-                data={monthlyProduction}
-                margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" fontSize={12} />
-                <YAxis fontSize={12} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Area 
-                  type="monotone" 
-                  dataKey="panels" 
-                  name="Painéis Produzidos" 
-                  fill="#3b82f6" 
-                  stroke="#3b82f6" 
-                  fillOpacity={0.2} 
-                />
-              </AreaChartComponent>
-            </ChartContainer>
+          <CardContent>
+            <div className="h-[250px] sm:h-[300px] w-full">
+              <ChartContainer config={chartConfig}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChartComponent 
+                    data={monthlyProduction}
+                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" fontSize={12} />
+                    <YAxis fontSize={12} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Area 
+                      type="monotone" 
+                      dataKey="panels" 
+                      name="Painéis Produzidos" 
+                      fill="#3b82f6" 
+                      stroke="#3b82f6" 
+                      fillOpacity={0.2} 
+                    />
+                  </AreaChartComponent>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           </CardContent>
         </Card>
         
@@ -107,26 +111,30 @@ const ReportsProductionSection: React.FC<ReportsProductionSectionProps> = ({
             </div>
             <PercentSquare className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="h-[250px] sm:h-[300px]">
-            <ChartContainer config={chartConfig}>
-              <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                <Pie
-                  data={panelTypes}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {panelTypes.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                  ))}
-                </Pie>
-                <ChartTooltip content={<ChartTooltipContent />} />
-              </PieChart>
-            </ChartContainer>
+          <CardContent>
+            <div className="h-[250px] sm:h-[300px] w-full">
+              <ChartContainer config={chartConfig}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                    <Pie
+                      data={panelTypes}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {panelTypes.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -139,21 +147,25 @@ const ReportsProductionSection: React.FC<ReportsProductionSectionProps> = ({
           </div>
           <Clock className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
-        <CardContent className="h-[250px] sm:h-[300px]">
-          <ChartContainer config={chartConfig}>
-            <LineChart 
-              data={productionTime}
-              margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="semana" fontSize={12} />
-              <YAxis domain={[30, 45]} ticks={[30, 35, 40, 45]} fontSize={12} />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Legend />
-              <Line type="monotone" dataKey="tempo" name="Tempo Real (h)" stroke="#3b82f6" strokeWidth={2} />
-              <Line type="monotone" dataKey="meta" name="Meta (h)" stroke="#f43f5e" strokeDasharray="5 5" />
-            </LineChart>
-          </ChartContainer>
+        <CardContent>
+          <div className="h-[250px] sm:h-[300px] w-full">
+            <ChartContainer config={chartConfig}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart 
+                  data={productionTime}
+                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="semana" fontSize={12} />
+                  <YAxis domain={[30, 45]} ticks={[30, 35, 40, 45]} fontSize={12} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Legend />
+                  <Line type="monotone" dataKey="tempo" name="Tempo Real (h)" stroke="#3b82f6" strokeWidth={2} />
+                  <Line type="monotone" dataKey="meta" name="Meta (h)" stroke="#f43f5e" strokeDasharray="5 5" />
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </div>
         </CardContent>
         <CardFooter className="text-sm text-muted-foreground border-t py-3">
           <div className="w-full overflow-x-auto">
