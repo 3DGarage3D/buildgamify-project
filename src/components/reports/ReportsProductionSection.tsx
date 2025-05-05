@@ -76,8 +76,8 @@ const ReportsProductionSection: React.FC<ReportsProductionSectionProps> = ({
             </div>
             <AreaChart className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="h-[250px] sm:h-[300px] w-full">
+          <CardContent className="pt-0 px-0">
+            <div className="h-[240px] sm:h-[280px] w-full px-2">
               <ChartContainer config={chartConfig}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChartComponent 
@@ -111,8 +111,8 @@ const ReportsProductionSection: React.FC<ReportsProductionSectionProps> = ({
             </div>
             <PercentSquare className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="h-[250px] sm:h-[300px] w-full">
+          <CardContent className="pt-0 px-0">
+            <div className="h-[240px] sm:h-[280px] w-full px-2">
               <ChartContainer config={chartConfig}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
@@ -147,8 +147,8 @@ const ReportsProductionSection: React.FC<ReportsProductionSectionProps> = ({
           </div>
           <Clock className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
-          <div className="h-[250px] sm:h-[300px] w-full">
+        <CardContent className="pt-0 px-0">
+          <div className="h-[240px] sm:h-[280px] w-full px-2">
             <ChartContainer config={chartConfig}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart 
