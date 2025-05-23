@@ -2,18 +2,16 @@
 import { useState, useEffect } from "react";
 import { useStaggeredAnimation } from "@/utils/animation";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import StatsCard from "@/components/dashboard/StatsCard";
+import StatsRow from "@/components/dashboard/StatsRow";
 import FeaturedProject from "@/components/dashboard/FeaturedProject";
-import AlertsCard from "@/components/dashboard/AlertsCard";
-import MetricsCard from "@/components/dashboard/MetricsCard";
-import NavigationCard from "@/components/dashboard/NavigationCard";
+import DashboardSidePanels from "@/components/dashboard/DashboardSidePanels";
+import NavigationCards from "@/components/dashboard/NavigationCards";
 import TasksList from "@/components/dashboard/TasksList";
 import { 
   stats, 
   featuredProjects, 
   recentTasks, 
   constructionImages,
-  dashboardLinks
 } from "@/data/dashboardData";
 
 const Index = () => {
@@ -38,11 +36,11 @@ const Index = () => {
   };
   
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <DashboardHeader onProjectCreated={handleProjectCreated} />
       
-      {/* Featured Project with Image */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Hero Section with Featured Project */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-2">
         <div className="lg:col-span-2">
           <FeaturedProject 
             project={projects[0]} 
@@ -50,32 +48,16 @@ const Index = () => {
           />
         </div>
         
-        <div className="lg:col-span-1 space-y-6">
-          <AlertsCard />
-          <MetricsCard />
+        <div className="lg:col-span-1">
+          <DashboardSidePanels />
         </div>
       </div>
       
       {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, index) => (
-          <StatsCard
-            key={stat.title}
-            {...stat}
-            visible={visibleStats.includes(index)}
-          />
-        ))}
-      </div>
+      <StatsRow stats={stats} visibleStats={visibleStats} />
       
       {/* Navigation Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {dashboardLinks.map((link) => (
-          <NavigationCard
-            key={link.name}
-            {...link}
-          />
-        ))}
-      </div>
+      <NavigationCards />
       
       {/* Tasks Section */}
       <TasksList tasks={recentTasks} />
