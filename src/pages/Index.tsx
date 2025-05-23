@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -238,10 +239,10 @@ const recentTasks: Task[] = [
   }
 ];
 
-// Add copyright-free construction images that match the project themes
+// Add sample construction images
 const constructionImages = [
-  "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?q=80&w=1000&auto=format&fit=crop", // Modern residential building for "Residencial Villa Moderna"
-  "https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1000&auto=format&fit=crop", // Office/commercial complex for "Centro Empresarial Horizonte"
+  "/lovable-uploads/207af5ae-c8be-4420-b695-f42f51561a8a.png",
+  "/lovable-uploads/58b8e536-401c-4bd9-9fad-452ff0b1adea.png",
 ];
 
 const Index = () => {
