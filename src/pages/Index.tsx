@@ -36,27 +36,29 @@ const Index = () => {
   };
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 p-2 sm:p-4 lg:p-6">
       <DashboardHeader onProjectCreated={handleProjectCreated} />
       
-      {/* Hero Section with Featured Project */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-2">
-        <div className="lg:col-span-2">
+      {/* Hero Section with Featured Project - Mobile First */}
+      <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6 mb-4">
+        {/* Featured Project - Full width on mobile, 2/3 on desktop */}
+        <div className="lg:col-span-2 order-1">
           <FeaturedProject 
             project={projects[0]} 
             imageUrl={constructionImages[selectedImage]}
           />
         </div>
         
-        <div className="lg:col-span-1">
+        {/* Side Panels - Stack on mobile, sidebar on desktop */}
+        <div className="lg:col-span-1 order-2">
           <DashboardSidePanels />
         </div>
       </div>
       
-      {/* Stats Section */}
+      {/* Stats Section - Responsive grid */}
       <StatsRow stats={stats} visibleStats={visibleStats} />
       
-      {/* Navigation Cards */}
+      {/* Navigation Cards - Mobile optimized */}
       <NavigationCards />
       
       {/* Tasks Section */}
