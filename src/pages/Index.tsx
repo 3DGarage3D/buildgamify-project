@@ -7,6 +7,7 @@ import FeaturedProject from "@/components/dashboard/FeaturedProject";
 import DashboardSidePanels from "@/components/dashboard/DashboardSidePanels";
 import NavigationCards from "@/components/dashboard/NavigationCards";
 import TasksList from "@/components/dashboard/TasksList";
+import GamefiedSection from "@/components/dashboard/GamefiedSection";
 import { 
   stats, 
   featuredProjects, 
@@ -39,9 +40,14 @@ const Index = () => {
     <div className="space-y-4 sm:space-y-6 p-2 sm:p-4 lg:p-6">
       <DashboardHeader onProjectCreated={handleProjectCreated} />
       
-      {/* Hero Section with Featured Project - Mobile First */}
+      {/* Gamified Progress Section - Top Priority */}
+      <GamefiedSection />
+      
+      {/* Stats Section - Key Metrics */}
+      <StatsRow stats={stats} visibleStats={visibleStats} />
+      
+      {/* Hero Section with Featured Project */}
       <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6 mb-4">
-        {/* Featured Project - Full width on mobile, 2/3 on desktop */}
         <div className="lg:col-span-2 order-1">
           <FeaturedProject 
             project={projects[0]} 
@@ -49,20 +55,16 @@ const Index = () => {
           />
         </div>
         
-        {/* Side Panels - Stack on mobile, sidebar on desktop */}
         <div className="lg:col-span-1 order-2">
           <DashboardSidePanels />
         </div>
       </div>
       
-      {/* Stats Section - Responsive grid */}
-      <StatsRow stats={stats} visibleStats={visibleStats} />
-      
-      {/* Navigation Cards - Mobile optimized */}
-      <NavigationCards />
-      
-      {/* Tasks Section */}
-      <TasksList tasks={recentTasks} />
+      {/* Quick Actions and Tasks */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        <NavigationCards />
+        <TasksList tasks={recentTasks} />
+      </div>
     </div>
   );
 };

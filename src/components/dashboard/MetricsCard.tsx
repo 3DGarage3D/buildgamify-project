@@ -1,78 +1,116 @@
 
-import { TrendingUp, BarChart, ArrowRight } from "lucide-react";
+import { TrendingUp, BarChart, ArrowRight, AlertCircle } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface MetricsCardProps {
   className?: string;
 }
 
 const MetricsCard = ({ className }: MetricsCardProps) => {
+  const metrics = [
+    {
+      label: "Painéis Produzidos",
+      value: 18,
+      percentage: 75,
+      trend: "+12%",
+      color: "emerald",
+      status: "good" // good, warning, danger
+    },
+    {
+      label: "Eficiência da Produção",
+      value: 92,
+      percentage: 92,
+      trend: "+4%",
+      color: "blue",
+      status: "excellent"
+    },
+    {
+      label: "Uso de Materiais",
+      value: 85,
+      percentage: 85,
+      trend: "-2%",
+      color: "amber",
+      status: "warning"
+    }
+  ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'excellent': return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300';
+      case 'good': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300';
+      case 'warning': return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300';
+      case 'danger': return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300';
+      default: return 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300';
+    }
+  };
+
+  const getProgressColor = (status: string) => {
+    switch (status) {
+      case 'excellent': return 'bg-green-500';
+      case 'good': return 'bg-emerald-500';
+      case 'warning': return 'bg-amber-500';
+      case 'danger': return 'bg-red-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
   return (
     <Card className={`overflow-hidden border-emerald-200/20 shadow-lg shadow-emerald-100/5 ${className}`}>
       <CardHeader className="pb-2 bg-emerald-50/50 dark:bg-emerald-900/10 border-b border-emerald-100/30 dark:border-emerald-800/20 px-3 sm:px-6 py-3 sm:py-4">
         <CardTitle className="text-base sm:text-lg flex items-center gap-2">
           <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-500" />
           <span>Métricas Semanais</span>
+          <Badge variant="outline" className="ml-auto text-xs">
+            Atualizado há 5min
+          </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-3 sm:pt-4 px-3 sm:px-6">
         <div className="space-y-3 sm:space-y-4">
-          <div className="bg-gradient-to-r from-emerald-50/70 to-emerald-50/20 dark:from-emerald-900/20 dark:to-transparent p-3 sm:p-4 rounded-lg">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1 sm:gap-2">
-                <BarChart className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-600" />
-                <span className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-400">
-                  Painéis Produzidos
-                </span>
+          {metrics.map((metric, index) => (
+            <div 
+              key={index}
+              className={`bg-gradient-to-r from-${metric.color}-50/70 to-${metric.color}-50/20 dark:from-${metric.color}-900/20 dark:to-transparent p-3 sm:p-4 rounded-lg border border-${metric.color}-100/20 dark:border-${metric.color}-800/20`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <BarChart className={`h-3 w-3 sm:h-4 sm:w-4 text-${metric.color}-600`} />
+                  <span className={`text-xs sm:text-sm font-medium text-${metric.color}-700 dark:text-${metric.color}-400`}>
+                    {metric.label}
+                  </span>
+                  {metric.status === 'warning' && (
+                    <AlertCircle className="h-3 w-3 text-amber-500" />
+                  )}
+                </div>
+                <div className={`flex items-center gap-1 text-${metric.color}-600 dark:text-${metric.color}-400`}>
+                  <AnimatedCounter 
+                    value={metric.value} 
+                    formatter={(val) => metric.label.includes('Eficiência') ? `${val}%` : val.toString()} 
+                    duration={1000} 
+                    className="text-base sm:text-lg font-bold" 
+                  /> 
+                  <span className={`text-xs px-1.5 py-0.5 rounded-full ${getStatusColor(metric.status)}`}>
+                    {metric.trend}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                <AnimatedCounter value={18} duration={1000} className="text-base sm:text-lg font-bold" /> 
-                <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded-full">+12%</span>
+              <div className={`w-full bg-${metric.color}-100/50 dark:bg-${metric.color}-900/20 rounded-full h-1.5`}>
+                <div 
+                  className={`${getProgressColor(metric.status)} h-1.5 rounded-full transition-all duration-500`} 
+                  style={{ width: `${metric.percentage}%` }}
+                ></div>
               </div>
+              {metric.status === 'warning' && (
+                <div className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+                  ⚠️ Atenção necessária - Considere otimização
+                </div>
+              )}
             </div>
-            <div className="w-full bg-emerald-100/50 dark:bg-emerald-900/20 rounded-full h-1.5">
-              <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: '75%' }}></div>
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-r from-blue-50/70 to-blue-50/20 dark:from-blue-900/20 dark:to-transparent p-3 sm:p-4 rounded-lg">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1 sm:gap-2">
-                <BarChart className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
-                <span className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-400">
-                  Eficiência da Produção
-                </span>
-              </div>
-              <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
-                <AnimatedCounter value={92} formatter={(val) => `${val}%`} duration={1000} className="text-base sm:text-lg font-bold" /> 
-                <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded-full">+4%</span>
-              </div>
-            </div>
-            <div className="w-full bg-blue-100/50 dark:bg-blue-900/20 rounded-full h-1.5">
-              <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '92%' }}></div>
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-r from-purple-50/70 to-purple-50/20 dark:from-purple-900/20 dark:to-transparent p-3 sm:p-4 rounded-lg">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1 sm:gap-2">
-                <BarChart className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600" />
-                <span className="text-xs sm:text-sm font-medium text-purple-700 dark:text-purple-400">
-                  Uso de Materiais
-                </span>
-              </div>
-              <div className="flex items-center gap-1 text-purple-600 dark:text-purple-400">
-                <AnimatedCounter value={85} formatter={(val) => `${val}%`} duration={1000} className="text-base sm:text-lg font-bold" /> 
-                <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-1.5 py-0.5 rounded-full">-2%</span>
-              </div>
-            </div>
-            <div className="w-full bg-purple-100/50 dark:bg-purple-900/20 rounded-full h-1.5">
-              <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '85%' }}></div>
-            </div>
-          </div>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="bg-muted/30 border-t px-3 sm:px-4 py-2 sm:py-3">

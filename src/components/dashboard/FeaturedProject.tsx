@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Users, Clock, ArrowUpRight, BarChart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 
 interface ProjectProps {
   project: {
@@ -26,13 +25,23 @@ interface ProjectProps {
 }
 
 const FeaturedProject = ({ project, imageUrl }: ProjectProps) => {
+  // Usar imagens mais relevantes ao tema do sistema
+  const thematicImages = [
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=400&fit=crop&crop=entropy", // Modern office building
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=400&fit=crop&crop=entropy", // Team collaboration
+    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=400&fit=crop&crop=entropy", // Construction/manufacturing
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop&crop=entropy", // Business analytics
+  ];
+  
+  const selectedImage = thematicImages[Math.floor(Math.random() * thematicImages.length)];
+
   return (
     <div className="rounded-xl overflow-hidden relative min-h-[280px] sm:min-h-[320px] group shadow-lg shadow-primary/5 border border-primary/10">
       {/* Background image with parallax effect */}
       <div 
         className="absolute inset-0 bg-center bg-cover transition-transform duration-1000 transform scale-105 group-hover:scale-110" 
         style={{ 
-          backgroundImage: `url(${imageUrl})`,
+          backgroundImage: `url(${selectedImage})`,
           opacity: 0.85
         }}
       />
