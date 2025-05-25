@@ -22,34 +22,36 @@ const Budget = lazy(() => import("./pages/Budget"));
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="flex flex-col min-h-screen w-full">
-          <Navbar />
-          <main className="flex-1 w-full max-w-full sm:max-w-7xl mx-auto p-3 md:p-6 lg:p-8 overflow-x-hidden">
-            <Suspense fallback={<div className="flex items-center justify-center h-[60vh]"><div className="animate-pulse-subtle text-muted-foreground">Carregando...</div></div>}>
-              <Routes>
-                <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-                <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
-                <Route path="/tasks" element={<PageTransition><Tasks /></PageTransition>} />
-                <Route path="/team" element={<PageTransition><Team /></PageTransition>} />
-                <Route path="/leaderboard" element={<PageTransition><Leaderboard /></PageTransition>} />
-                <Route path="/calendar" element={<PageTransition><Calendar /></PageTransition>} />
-                <Route path="/inventory" element={<PageTransition><Inventory /></PageTransition>} />
-                <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
-                <Route path="/budget" element={<PageTransition><Budget /></PageTransition>} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </main>
-        </div>
+        <TooltipProvider>
+          <div className="flex flex-col min-h-screen w-full">
+            <Navbar />
+            <main className="flex-1 w-full max-w-full sm:max-w-7xl mx-auto p-3 md:p-6 lg:p-8 overflow-x-hidden">
+              <Suspense fallback={<div className="flex items-center justify-center h-[60vh]"><div className="animate-pulse-subtle text-muted-foreground">Carregando...</div></div>}>
+                <Routes>
+                  <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+                  <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
+                  <Route path="/tasks" element={<PageTransition><Tasks /></PageTransition>} />
+                  <Route path="/team" element={<PageTransition><Team /></PageTransition>} />
+                  <Route path="/leaderboard" element={<PageTransition><Leaderboard /></PageTransition>} />
+                  <Route path="/calendar" element={<PageTransition><Calendar /></PageTransition>} />
+                  <Route path="/inventory" element={<PageTransition><Inventory /></PageTransition>} />
+                  <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
+                  <Route path="/budget" element={<PageTransition><Budget /></PageTransition>} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </main>
+          </div>
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
       </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    </QueryClientProvider>
+  );
+};
 
 export default App;
