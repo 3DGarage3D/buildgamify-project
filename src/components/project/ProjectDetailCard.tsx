@@ -175,7 +175,7 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, onClose 
         </div>
       </CardContent>
       
-      <CardFooter className="pt-6 pb-6 flex justify-between">
+      <CardFooter className="pt-6 pb-6 flex justify-between bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
         <Button variant="outline" onClick={onClose}>Fechar</Button>
         <div className="flex gap-2">
           <Button variant="outline" asChild>
