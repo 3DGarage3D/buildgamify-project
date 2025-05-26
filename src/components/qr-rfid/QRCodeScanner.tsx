@@ -55,35 +55,35 @@ const QRCodeScanner = () => {
       montagem: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/20 dark:text-indigo-400',
       concretagem: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
       desforma: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-      armazenagem: 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400',
+      armazenagem: 'bg-slate-100 text-slate-800 dark:bg-slate-900/20 dark:text-slate-400',
       entrega: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
     };
-    return colors[stage as keyof typeof colors] || 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+    return colors[stage as keyof typeof colors] || 'bg-slate-100 text-slate-800 dark:bg-slate-900/20 dark:text-slate-400';
   };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Scanner */}
-      <Card className="bg-white dark:bg-gray-800">
+      <Card className="bg-card border-border">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-gray-100">
+          <CardTitle className="text-card-foreground">
             Scanner QR Code
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center relative overflow-hidden">
+          <div className="aspect-square bg-muted rounded-lg flex items-center justify-center relative overflow-hidden">
             {isScanning ? (
               <div className="text-center">
                 <div className="animate-pulse">
-                  <Camera className="h-16 w-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+                  <Camera className="h-16 w-16 text-primary mx-auto mb-4" />
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">Escaneando...</p>
-                <div className="absolute inset-4 border-2 border-blue-600 dark:border-blue-400 rounded-lg animate-pulse"></div>
+                <p className="text-muted-foreground">Escaneando...</p>
+                <div className="absolute inset-4 border-2 border-primary rounded-lg animate-pulse"></div>
               </div>
             ) : (
               <div className="text-center">
-                <Camera className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500 dark:text-gray-400">
+                <Camera className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">
                   Clique para iniciar o scanner
                 </p>
               </div>
@@ -109,9 +109,9 @@ const QRCodeScanner = () => {
       </Card>
 
       {/* Results */}
-      <Card className="bg-white dark:bg-gray-800">
+      <Card className="bg-card border-border">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-gray-100">
+          <CardTitle className="text-card-foreground">
             {scannedData ? 'Dados do Painel' : 'Escaneamentos Recentes'}
           </CardTitle>
         </CardHeader>
@@ -130,16 +130,16 @@ const QRCodeScanner = () => {
                 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Lote:</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">{scannedData.batch}</span>
+                    <span className="text-muted-foreground">Lote:</span>
+                    <span className="font-medium text-foreground">{scannedData.batch}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Destino:</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">{scannedData.destination}</span>
+                    <span className="text-muted-foreground">Destino:</span>
+                    <span className="font-medium text-foreground">{scannedData.destination}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Escaneado:</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                    <span className="text-muted-foreground">Escaneado:</span>
+                    <span className="font-medium text-foreground">
                       {new Date(scannedData.timestamp).toLocaleString('pt-BR')}
                     </span>
                   </div>
@@ -162,12 +162,12 @@ const QRCodeScanner = () => {
               {recentScans.map((scan, index) => (
                 <div 
                   key={index}
-                  className="p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
+                  className="p-3 border border-border rounded-lg hover:bg-accent cursor-pointer transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-gray-100">{scan.id}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{scan.timestamp}</p>
+                      <p className="font-medium text-foreground">{scan.id}</p>
+                      <p className="text-sm text-muted-foreground">{scan.timestamp}</p>
                     </div>
                     <Badge className={getStageColor(scan.stage)} variant="secondary">
                       {scan.stage}
