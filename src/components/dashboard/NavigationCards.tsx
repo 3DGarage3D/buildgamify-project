@@ -13,13 +13,13 @@ const NavigationCards = () => {
           Acesso Rápido
         </h2>
         <div className="flex items-center gap-2">
-          <Button asChild variant="outline" size="sm" className="hidden sm:flex bg-card border-border">
+          <Button asChild variant="outline" size="sm" className="hidden sm:flex bg-background border-border text-foreground hover:bg-accent hover:text-accent-foreground">
             <Link to="/qr-rfid" className="flex items-center gap-2">
               <QrCode className="h-4 w-4" />
               QR & RFID
             </Link>
           </Button>
-          <Button asChild variant="outline" size="sm" className="hidden sm:flex bg-card border-border">
+          <Button asChild variant="outline" size="sm" className="hidden sm:flex bg-background border-border text-foreground hover:bg-accent hover:text-accent-foreground">
             <Link to="/production-flow" className="flex items-center gap-2">
               <Workflow className="h-4 w-4" />
               Fluxo de Produção

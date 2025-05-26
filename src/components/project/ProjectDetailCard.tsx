@@ -53,8 +53,8 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, onClose 
       <CardHeader className="pb-2 bg-gradient-to-r from-primary/10 to-transparent">
         <div className="flex justify-between">
           <div>
-            <CardTitle className="text-2xl font-display">{project.title}</CardTitle>
-            <CardDescription className="mt-1">{project.description}</CardDescription>
+            <CardTitle className="text-2xl font-display text-foreground">{project.title}</CardTitle>
+            <CardDescription className="mt-1 text-muted-foreground">{project.description}</CardDescription>
           </div>
           <Badge 
             variant={
@@ -75,12 +75,12 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, onClose 
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Prazo: {formattedDate}</span>
+                <span className="text-sm text-foreground">Prazo: {formattedDate}</span>
               </div>
               
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">
+                <span className="text-sm text-foreground">
                   Equipe: <AnimatedCounter value={project.teamSize} duration={800} /> membros
                 </span>
               </div>
@@ -88,31 +88,31 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, onClose 
               {project.client && (
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Cliente: {project.client}</span>
+                  <span className="text-sm text-foreground">Cliente: {project.client}</span>
                 </div>
               )}
               
               {project.location && (
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Local: {project.location}</span>
+                  <span className="text-sm text-foreground">Local: {project.location}</span>
                 </div>
               )}
             </div>
             
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium">Progresso do Projeto</span>
-                <span className="text-sm font-medium">{project.progress}%</span>
+                <span className="text-sm font-medium text-foreground">Progresso do Projeto</span>
+                <span className="text-sm font-medium text-foreground">{project.progress}%</span>
               </div>
               <Progress value={project.progress} className="h-2" />
             </div>
             
             <div>
-              <h4 className="text-sm font-semibold mb-2">Tarefas</h4>
+              <h4 className="text-sm font-semibold mb-2 text-foreground">Tarefas</h4>
               <div className="flex items-center gap-2 mb-1">
                 <CheckSquare className="h-4 w-4 text-muted-foreground" />
-                <div className="text-sm">
+                <div className="text-sm text-foreground">
                   <span className="font-medium">{project.tasks.completed}</span> de {project.tasks.total} concluídas
                 </div>
               </div>
@@ -124,24 +124,24 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, onClose 
           </div>
           
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Painéis em Produção</h4>
+            <h4 className="text-sm font-semibold text-foreground">Painéis em Produção</h4>
             
             {Object.keys(panelsByStage).length > 0 ? (
               <div className="space-y-3">
                 {Object.entries(panelsByStage).map(([stage, panels]) => (
-                  <div key={stage} className="rounded-md border p-3">
+                  <div key={stage} className="rounded-md border border-border p-3 bg-background">
                     <div className="flex justify-between items-center mb-2">
-                      <Badge variant="outline" className="bg-primary/10">
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
                         {PANEL_STAGE_LABELS[stage as keyof typeof PANEL_STAGE_LABELS] || stage}
                       </Badge>
-                      <span className="text-sm font-medium">{panels.length} painéis</span>
+                      <span className="text-sm font-medium text-foreground">{panels.length} painéis</span>
                     </div>
                     
                     <div className="space-y-2">
                       {panels.slice(0, 2).map((panel) => (
                         <div key={panel.id} className="flex justify-between items-center text-sm">
                           <div>
-                            <span>{panel.type}</span>
+                            <span className="text-foreground">{panel.type}</span>
                             <span className="text-muted-foreground ml-2">
                               {panel.dimensions.width}x{panel.dimensions.height}cm
                             </span>
@@ -175,16 +175,18 @@ const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({ project, onClose 
         </div>
       </CardContent>
       
-      <CardFooter className="pt-6 pb-6 flex justify-between bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
-        <Button variant="outline" onClick={onClose}>Fechar</Button>
+      <CardFooter className="pt-6 pb-6 flex justify-between bg-background border-t border-border">
+        <Button variant="outline" onClick={onClose} className="text-foreground border-border hover:bg-accent hover:text-accent-foreground">
+          Fechar
+        </Button>
         <div className="flex gap-2">
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild className="text-foreground border-border hover:bg-accent hover:text-accent-foreground">
             <Link to="/calendar" className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               <span>Cronograma</span>
             </Link>
           </Button>
-          <Button asChild>
+          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
             <Link to="/inventory" className="flex items-center gap-1">
               <span>Ver Painéis</span>
               <ArrowRight className="h-4 w-4" />

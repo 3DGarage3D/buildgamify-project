@@ -15,7 +15,7 @@ interface NavigationCardProps {
 const NavigationCard = ({ name, icon: Icon, href, description, priority = false }: NavigationCardProps) => {
   return (
     <Link to={href} className="group">
-      <Card className={`h-full hover-card overflow-hidden transition-all duration-300 bg-card border-border ${
+      <Card className={`h-full hover-card overflow-hidden transition-all duration-300 bg-background border-border ${
         priority 
           ? 'shadow-lg shadow-primary/5 hover:shadow-xl hover:shadow-primary/10 bg-gradient-to-br from-primary/5 to-transparent' 
           : 'hover:shadow-lg hover:shadow-primary/5'
@@ -29,7 +29,7 @@ const NavigationCard = ({ name, icon: Icon, href, description, priority = false 
             <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
           <div className="flex-grow min-w-0">
-            <h3 className={`font-medium text-sm sm:text-base mb-1 transition-colors line-clamp-1 text-card-foreground ${
+            <h3 className={`font-medium text-sm sm:text-base mb-1 transition-colors line-clamp-1 text-foreground ${
               priority 
                 ? 'group-hover:text-primary font-semibold' 
                 : 'group-hover:text-primary'
