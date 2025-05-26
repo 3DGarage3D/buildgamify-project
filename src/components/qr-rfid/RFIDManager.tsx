@@ -40,7 +40,7 @@ const RFIDManager = () => {
   const getSignalIcon = (signal: string) => {
     const signalLevels = {
       strong: 'text-green-600',
-      medium: 'text-yellow-600',
+      medium: 'text-blue-600',
       weak: 'text-red-600'
     };
     return signalLevels[signal as keyof typeof signalLevels] || 'text-gray-400';
@@ -48,11 +48,11 @@ const RFIDManager = () => {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      active: 'bg-green-100 text-green-800',
-      warning: 'bg-yellow-100 text-yellow-800',
-      error: 'bg-red-100 text-red-800'
+      active: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
+      warning: 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400',
+      error: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
   };
 
   const addRFIDTag = () => {
@@ -188,12 +188,12 @@ const RFIDManager = () => {
               </div>
 
               {/* Storage Area B */}
-              <div className="col-span-2 row-span-2 bg-yellow-200 dark:bg-yellow-800 rounded flex items-center justify-center">
+              <div className="col-span-2 row-span-2 bg-orange-200 dark:bg-orange-800 rounded flex items-center justify-center">
                 <div className="text-center">
-                  <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Pátio - Zona B</p>
+                  <p className="text-sm font-medium text-orange-800 dark:text-orange-200">Pátio - Zona B</p>
                   <div className="flex items-center justify-center gap-1 mt-1">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-xs text-yellow-600 dark:text-yellow-300">8 painéis</span>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-xs text-orange-600 dark:text-orange-300">8 painéis</span>
                   </div>
                 </div>
               </div>
