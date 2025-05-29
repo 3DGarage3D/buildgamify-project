@@ -1,9 +1,7 @@
-
 import { useState } from "react";
 import { CheckCircle, Circle, Clock, Star, AlertTriangle, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-
 interface TaskItemProps {
   task: {
     id: string;
@@ -16,10 +14,11 @@ interface TaskItemProps {
   };
   className?: string;
 }
-
-const TaskItem = ({ task, className }: TaskItemProps) => {
+const TaskItem = ({
+  task,
+  className
+}: TaskItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
@@ -30,7 +29,6 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
         return "text-emerald-500";
     }
   };
-  
   const getStatusDetails = (status: string) => {
     switch (status) {
       case "completed":
@@ -53,54 +51,30 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
         };
     }
   };
-  
   const statusDetails = getStatusDetails(task.status);
   const priorityColor = getPriorityColor(task.priority);
-  
   const formattedDate = new Date(task.dueDate).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'short'
   });
-  
-  return (
-    <div 
-      className={cn(
-        "group relative rounded-lg border bg-card p-4 transition-all duration-200",
-        task.status === "completed" && "bg-muted/50",
-        className
-      )}
-    >
-      <div 
-        className="flex items-center justify-between cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
+  return <div className={cn("group relative rounded-lg border bg-card p-4 transition-all duration-200", task.status === "completed" && "bg-muted/50", className)}>
+      <div className="flex items-center justify-between cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
         <div className="flex items-center gap-3">
           <statusDetails.icon className={cn("h-5 w-5", statusDetails.color)} />
           
           <div>
-            <h3 className={cn(
-              "font-medium",
-              task.status === "completed" && "line-through text-muted-foreground"
-            )}>
+            <h3 className={cn("font-medium", task.status === "completed" && "line-through text-muted-foreground")}>
               {task.title}
             </h3>
             
-            {!isExpanded && (
-              <p className="text-xs text-muted-foreground line-clamp-1">
+            {!isExpanded && <p className="text-xs line-clamp-1 text-zinc-800">
                 {task.description}
-              </p>
-            )}
+              </p>}
           </div>
         </div>
         
         <div className="flex items-center gap-3">
-          <Badge 
-            variant="outline" 
-            className={cn(
-              "text-xs flex gap-1 items-center",
-              task.status === "completed" ? "bg-muted" : "bg-secondary"
-            )}
-          >
+          <Badge variant="outline" className={cn("text-xs flex gap-1 items-center", task.status === "completed" ? "bg-muted" : "bg-secondary")}>
             <Star className="h-3 w-3 text-amber-400" />
             {task.points}
           </Badge>
@@ -110,15 +84,11 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
             <span className="hidden sm:inline text-muted-foreground">{formattedDate}</span>
           </div>
           
-          <ChevronRight className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform duration-200",
-            isExpanded && "rotate-90"
-          )} />
+          <ChevronRight className={cn("h-4 w-4 text-muted-foreground transition-transform duration-200", isExpanded && "rotate-90")} />
         </div>
       </div>
       
-      {isExpanded && (
-        <div className="mt-3 pl-8 animate-slide-down">
+      {isExpanded && <div className="mt-3 pl-8 animate-slide-down">
           <p className="text-sm text-muted-foreground mb-2">
             {task.description}
           </p>
@@ -136,10 +106,7 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
               Data limite: {formattedDate}
             </Badge>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        </div>}
+    </div>;
 };
-
 export default TaskItem;
