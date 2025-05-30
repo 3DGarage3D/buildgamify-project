@@ -1,9 +1,12 @@
+
 import { Link } from "react-router-dom";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+
 const AlertsCard = () => {
-  return <Card className="overflow-hidden border-amber-200/20 shadow-lg shadow-amber-100/5 bg-gray-400">
+  return (
+    <Card className="overflow-hidden border-amber-200/20 shadow-lg shadow-amber-100/5">
       <CardHeader className="pb-2 bg-amber-50/50 dark:bg-amber-900/10 border-b border-amber-100/30 dark:border-amber-800/20 px-3 sm:px-6 py-3 sm:py-4">
         <CardTitle className="text-base sm:text-lg flex items-center gap-2">
           <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-amber-500" />
@@ -39,14 +42,16 @@ const AlertsCard = () => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="border-t px-3 sm:px-4 py-2 sm:py-3 bg-zinc-50">
+      <CardFooter className="bg-muted/30 border-t px-3 sm:px-4 py-2 sm:py-3">
         <Button variant="ghost" size="sm" asChild className="w-full justify-between text-muted-foreground hover:text-primary text-xs sm:text-sm">
           <Link to="/reports" className="flex items-center justify-between w-full">
-            <span className="text-zinc-800">Ver todos os alertas</span>
+            <span>Ver todos os alertas</span>
             <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Link>
         </Button>
       </CardFooter>
-    </Card>;
+    </Card>
+  );
 };
+
 export default AlertsCard;

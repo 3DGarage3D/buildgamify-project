@@ -60,10 +60,10 @@ const FeaturedProject = ({ project, imageUrl }: ProjectProps) => {
               {project.status}
             </Badge>
           </div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold font-display mb-2 group-hover:text-white/90 transition-colors text-white">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold font-display mb-2 group-hover:text-white/90 transition-colors">
             {project.title}
           </h2>
-          <p className="max-w-lg opacity-90 text-sm sm:text-base line-clamp-2 text-white">
+          <p className="max-w-lg opacity-90 text-sm sm:text-base line-clamp-2">
             {project.description}
           </p>
         </div>
@@ -71,8 +71,8 @@ const FeaturedProject = ({ project, imageUrl }: ProjectProps) => {
         <div className="space-y-4 mt-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs sm:text-sm font-medium text-white">Progresso do Projeto</span>
-              <span className="text-xs sm:text-sm font-medium text-white">{project.progress}%</span>
+              <span className="text-xs sm:text-sm font-medium">Progresso do Projeto</span>
+              <span className="text-xs sm:text-sm font-medium">{project.progress}%</span>
             </div>
             <div className="w-full bg-white/30 rounded-full h-2">
               <div 
@@ -85,26 +85,26 @@ const FeaturedProject = ({ project, imageUrl }: ProjectProps) => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
             <div className="bg-white/10 rounded-lg p-2 sm:p-3">
               <div className="flex items-center gap-1 sm:gap-2">
-                <Clock className="h-3 w-3 sm:h-4 sm:w-4 opacity-80 text-white" />
-                <span className="text-xs sm:text-sm font-medium text-white">Prazo</span>
+                <Clock className="h-3 w-3 sm:h-4 sm:w-4 opacity-80" />
+                <span className="text-xs sm:text-sm font-medium">Prazo</span>
               </div>
-              <p className="mt-1 text-xs sm:text-sm text-white">{new Date(project.dueDate).toLocaleDateString('pt-BR')}</p>
+              <p className="mt-1 text-xs sm:text-sm">{new Date(project.dueDate).toLocaleDateString('pt-BR')}</p>
             </div>
             
             <div className="bg-white/10 rounded-lg p-2 sm:p-3">
               <div className="flex items-center gap-1 sm:gap-2">
-                <Users className="h-3 w-3 sm:h-4 sm:w-4 opacity-80 text-white" />
-                <span className="text-xs sm:text-sm font-medium text-white">Equipe</span>
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 opacity-80" />
+                <span className="text-xs sm:text-sm font-medium">Equipe</span>
               </div>
-              <p className="mt-1 text-xs sm:text-sm text-white">{project.teamSize} membros</p>
+              <p className="mt-1 text-xs sm:text-sm">{project.teamSize} membros</p>
             </div>
             
             <div className="bg-white/10 rounded-lg p-2 sm:p-3">
               <div className="flex items-center gap-1 sm:gap-2">
-                <BarChart className="h-3 w-3 sm:h-4 sm:w-4 opacity-80 text-white" />
-                <span className="text-xs sm:text-sm font-medium text-white">Tarefas</span>
+                <BarChart className="h-3 w-3 sm:h-4 sm:w-4 opacity-80" />
+                <span className="text-xs sm:text-sm font-medium">Tarefas</span>
               </div>
-              <p className="mt-1 text-xs sm:text-sm text-white">{project.tasks.completed} de {project.tasks.total}</p>
+              <p className="mt-1 text-xs sm:text-sm">{project.tasks.completed} de {project.tasks.total}</p>
             </div>
             
             <div className="bg-primary/30 rounded-lg p-2 sm:p-3 col-span-2 lg:col-span-1">

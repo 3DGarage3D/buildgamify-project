@@ -15,21 +15,21 @@ interface NavigationCardProps {
 const NavigationCard = ({ name, icon: Icon, href, description, priority = false }: NavigationCardProps) => {
   return (
     <Link to={href} className="group">
-      <Card className={`h-full hover-card overflow-hidden transition-all duration-300 bg-background border-border ${
+      <Card className={`h-full hover-card overflow-hidden transition-all duration-300 ${
         priority 
-          ? 'shadow-lg shadow-primary/5 hover:shadow-xl hover:shadow-primary/10 bg-gradient-to-br from-primary/5 to-transparent' 
-          : 'hover:shadow-lg hover:shadow-primary/5'
+          ? 'border border-primary/30 shadow-lg shadow-primary/5 hover:shadow-xl hover:shadow-primary/10 bg-gradient-to-br from-primary/5 to-transparent' 
+          : 'border border-border/50 hover:shadow-lg hover:shadow-primary/5'
       }`}>
         <CardContent className="flex items-start p-3 sm:p-4 h-full min-h-[80px] sm:min-h-[100px]">
           <div className={`p-2 sm:p-2.5 rounded-md mr-3 sm:mr-4 flex-shrink-0 transition-colors ${
             priority 
-              ? 'bg-primary/20 text-primary group-hover:bg-primary group-hover:text-primary-foreground' 
+              ? 'bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white' 
               : 'bg-primary/10 text-primary'
           }`}>
             <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
           <div className="flex-grow min-w-0">
-            <h3 className={`font-medium text-sm sm:text-base mb-1 transition-colors line-clamp-1 text-foreground ${
+            <h3 className={`font-medium text-sm sm:text-base mb-1 transition-colors line-clamp-1 ${
               priority 
                 ? 'group-hover:text-primary font-semibold' 
                 : 'group-hover:text-primary'
