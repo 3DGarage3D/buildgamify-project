@@ -18,9 +18,20 @@ interface Task {
 
 interface TasksListProps {
   tasks: Task[];
+  compact?: boolean;
 }
 
-const TasksList = ({ tasks }: TasksListProps) => {
+const TasksList = ({ tasks, compact = false }: TasksListProps) => {
+  if (compact) {
+    return (
+      <div className="space-y-3">
+        {tasks.map((task) => (
+          <TaskItem key={task.id} task={task} compact />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <Card className="overflow-hidden border-primary/10 shadow-lg shadow-primary/5">
       <CardHeader className="pb-2 bg-primary/5 border-b px-3 sm:px-6 py-3 sm:py-4">

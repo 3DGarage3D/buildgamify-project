@@ -15,9 +15,10 @@ interface TaskItemProps {
     points: number;
   };
   className?: string;
+  compact?: boolean;
 }
 
-const TaskItem = ({ task, className }: TaskItemProps) => {
+const TaskItem = ({ task, className, compact = false }: TaskItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
   const getPriorityColor = (priority: string) => {
@@ -25,7 +26,7 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
       case "high":
         return "text-destructive";
       case "medium":
-        return "text-amber-500";
+        return "text-orange-500";
       default:
         return "text-emerald-500";
     }
@@ -42,7 +43,7 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
       case "in-progress":
         return {
           icon: Clock,
-          color: "text-amber-500",
+          color: "text-orange-500",
           label: "Em andamento"
         };
       default:
@@ -62,6 +63,34 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
     month: 'short'
   });
   
+  if (compact) {
+    return (
+      <div className={cn(
+        "flex items-center justify-between p-2 rounded-lg border bg-card/50 hover:bg-accent/30 transition-colors",
+        task.status === "completed" && "bg-muted/50",
+        className
+      )}>
+        <div className="flex items-center gap-2">
+          <statusDetails.icon className={cn("h-3 w-3", statusDetails.color)} />
+          <div>
+            <h4 className={cn(
+              "font-medium text-xs",
+              task.status === "completed" && "line-through text-muted-foreground"
+            )}>
+              {task.title}
+            </h4>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-1">
+          <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+            {statusDetails.label}
+          </Badge>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
       className={cn(
@@ -101,7 +130,7 @@ const TaskItem = ({ task, className }: TaskItemProps) => {
               task.status === "completed" ? "bg-muted" : "bg-secondary"
             )}
           >
-            <Star className="h-3 w-3 text-amber-400" />
+            <Star className="h-3 w-3 text-blue-400" />
             {task.points}
           </Badge>
           
