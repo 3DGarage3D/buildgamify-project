@@ -19,6 +19,7 @@ const Calendar = lazy(() => import("./pages/Calendar"));
 const Inventory = lazy(() => import("./pages/Inventory"));
 const Reports = lazy(() => import("./pages/Reports"));
 const Budget = lazy(() => import("./pages/Budget"));
+const Production = lazy(() => import("./pages/Production"));
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => {
                   <Route path="/inventory" element={<PageTransition><Inventory /></PageTransition>} />
                   <Route path="/reports" element={<PageTransition><Reports /></PageTransition>} />
                   <Route path="/budget" element={<PageTransition><Budget /></PageTransition>} />
+                  <Route path="/production" element={<PageTransition><Production /></PageTransition>} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>

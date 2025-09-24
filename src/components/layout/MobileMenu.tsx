@@ -11,6 +11,7 @@ import {
   BarChart3,
   Boxes,
   FileSpreadsheet,
+  Activity,
   LogOut,
   Settings,
   User,
@@ -57,6 +58,7 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
     {
       title: "Produção",
       items: [
+        { name: "Monitoramento IoT", href: "/production", icon: Activity },
         { name: "Calendário", href: "/calendar", icon: CalendarDays },
         { name: "Estoque", href: "/inventory", icon: Boxes },
       ]
