@@ -1,7 +1,7 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, User, Bell } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, User, Bell, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
@@ -14,15 +14,64 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import MobileMenu from "./MobileMenu";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  // TODO: Substituir por sistema de autenticação real
-  const user = {
-    name: "Carlos Silva",
-    role: "Gerente de Produção",
-    avatar: "https://avatars.githubusercontent.com/u/124599?v=4"
+  const [profileName, setProfileName] = useState<string | null>(null);
+  const { user, signOut, userRole } = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (user) {
+      // Fetch profile name
+      const fetchProfile = async () => {
+        const { data } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("id", user.id)
+          .maybeSingle();
+        
+        if (data?.full_name) {
+          setProfileName(data.full_name);
+        }
+      };
+      fetchProfile();
+    }
+  }, [user]);
+
+  // Don't show navbar on auth page
+  if (location.pathname === "/auth") {
+    return null;
+  }
+
+  // Don't show navbar if not authenticated
+  if (!user) {
+    return null;
+  }
+
+  const getRoleLabel = (role: string | null) => {
+    switch (role) {
+      case "admin":
+        return "Administrador";
+      case "financeiro":
+        return "Financeiro";
+      case "operacional":
+        return "Operacional";
+      default:
+        return "Usuário";
+    }
+  };
+
+  const getInitials = (name: string | null) => {
+    if (!name) return "U";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   return (
@@ -86,22 +135,21 @@ const Navbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer h-8 w-8 md:h-10 md:w-10">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback>CS</AvatarFallback>
+                <AvatarFallback>{getInitials(profileName)}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>
                 <div className="flex flex-col">
-                  <span>{user.name}</span>
-                  <span className="text-xs text-muted-foreground">{user.role}</span>
+                  <span>{profileName || user.email}</span>
+                  <span className="text-xs text-muted-foreground">{getRoleLabel(userRole)}</span>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Perfil</DropdownMenuItem>
-              <DropdownMenuItem>Configurações</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">Sair</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => signOut()} className="text-destructive cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" />
+                Sair
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
