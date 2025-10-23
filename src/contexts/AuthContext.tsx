@@ -10,7 +10,7 @@ interface AuthContextType {
   userRole: UserRole | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, fullName: string, role: UserRole) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -86,10 +86,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
-  const signUp = async (email: string, password: string, fullName: string) => {
+  const signUp = async (email: string, password: string, fullName: string, role: UserRole) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -99,6 +99,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
       },
     });
+
+    // Insert user role after successful signup
+    if (!error && data.user) {
+      const { error: roleError } = await supabase
+        .from("user_roles")
+        .insert({
+          user_id: data.user.id,
+          role: role,
+        });
+
+      if (roleError) {
+        console.error("Error inserting user role:", roleError);
+        return { error: roleError };
+      }
+    }
+
     return { error };
   };
 

@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Factory } from "lucide-react";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState<"admin" | "financeiro" | "operacional">("operacional");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export default function Auth() {
     e.preventDefault();
     setIsLoading(true);
 
-    const { error } = await signUp(email, password, fullName);
+    const { error } = await signUp(email, password, fullName, role);
 
     if (error) {
       toast({
@@ -157,6 +159,19 @@ export default function Auth() {
                     required
                     minLength={6}
                   />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-role">Nível de Acesso</Label>
+                  <Select value={role} onValueChange={(value: any) => setRole(value)}>
+                    <SelectTrigger id="signup-role">
+                      <SelectValue placeholder="Selecione o nível" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="operacional">Operacional</SelectItem>
+                      <SelectItem value="financeiro">Financeiro</SelectItem>
+                      <SelectItem value="admin">Administrador</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Cadastrando..." : "Cadastrar"}
