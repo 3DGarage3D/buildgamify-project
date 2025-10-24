@@ -131,3 +131,47 @@ export interface ProjectDistribution {
 export interface ChartConfig {
   [key: string]: { color: string };
 }
+
+export interface SinapiComposition {
+  id: string;
+  code: string;
+  name: string;
+  unit: string;
+  totalValue: number;
+  bdiPercentage?: number;
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+  items: SinapiCompositionItem[];
+}
+
+export interface SinapiCompositionItem {
+  id: string;
+  compositionId: string;
+  itemCode: string;
+  description: string;
+  source: 'SINAPI' | 'SP OBRAS' | 'PRÓPRIA' | string;
+  category: 'Material' | 'Mão de Obra com Encargos Complementares' | 'Equipamento' | 'Equipamento Custo Horário' | 'Serviço' | string;
+  unit: string;
+  coefficient: number;
+  unitPrice: number;
+  totalPrice: number;
+  createdAt: Date;
+}
+
+export interface SinapiComparison {
+  itemCode: string;
+  description: string;
+  unit: string;
+  values: Array<{
+    compositionCode: string;
+    compositionName: string;
+    unitPrice: number;
+    source: string;
+    date: Date;
+  }>;
+  averagePrice: number;
+  minPrice: number;
+  maxPrice: number;
+  priceVariation: number; // percentual
+}

@@ -20,6 +20,9 @@ import FilterBar from "@/components/budget/FilterBar";
 import BudgetVisualizer from "@/components/budget/BudgetVisualizer";
 import NewBudgetDialog from "@/components/budget/NewBudgetDialog";
 import MaterialSearchBox from "@/components/budget/MaterialSearchBox";
+import SinapiComparisonImport from "@/components/budget/SinapiComparisonImport";
+import SinapiComparisonTable from "@/components/budget/SinapiComparisonTable";
+import SinapiCodeSearch from "@/components/budget/SinapiCodeSearch";
 
 const BudgetPage = () => {
   const [materials, setMaterials] = useState<MaterialItem[]>([]);
@@ -28,6 +31,7 @@ const BudgetPage = () => {
   const [selectedUnidade, setSelectedUnidade] = useState<string | undefined>();
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [activeBudget, setActiveBudget] = useState<Budget | null>(null);
+  const [sinapiRefreshTrigger, setSinapiRefreshTrigger] = useState(0);
   const { toast } = useToast();
   
   const unidades = Array.from(new Set(materials.map(item => item.unidade))).sort();
@@ -92,6 +96,10 @@ const BudgetPage = () => {
     setActiveBudget(null);
   };
 
+  const handleSinapiImport = () => {
+    setSinapiRefreshTrigger(prev => prev + 1);
+  };
+
   // Save to localStorage when budgets change
   useEffect(() => {
     if (budgets.length > 0) {
@@ -126,7 +134,7 @@ const BudgetPage = () => {
       </div>
       
       <Tabs defaultValue="materials" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="materials" className="flex items-center gap-2">
             <List className="h-4 w-4" />
             <span>Insumos</span>
@@ -134,6 +142,10 @@ const BudgetPage = () => {
           <TabsTrigger value="budgets" className="flex items-center gap-2">
             <DollarSign className="h-4 w-4" />
             <span>Orçamentos</span>
+          </TabsTrigger>
+          <TabsTrigger value="sinapi" className="flex items-center gap-2">
+            <FileSpreadsheet className="h-4 w-4" />
+            <span>Comparação SINAPI</span>
           </TabsTrigger>
         </TabsList>
         
@@ -250,6 +262,14 @@ const BudgetPage = () => {
               </div>
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="sinapi" className="space-y-6">
+          <div className="grid gap-6">
+            <SinapiComparisonImport onImport={handleSinapiImport} />
+            <SinapiCodeSearch />
+            <SinapiComparisonTable refreshTrigger={sinapiRefreshTrigger} />
+          </div>
         </TabsContent>
       </Tabs>
     </div>

@@ -35,6 +35,92 @@ export type Database = {
         }
         Relationships: []
       }
+      sinapi_composition_items: {
+        Row: {
+          category: string
+          coefficient: number | null
+          composition_id: string
+          created_at: string
+          description: string
+          id: string
+          item_code: string
+          source: string | null
+          total_price: number | null
+          unit: string
+          unit_price: number | null
+        }
+        Insert: {
+          category: string
+          coefficient?: number | null
+          composition_id: string
+          created_at?: string
+          description: string
+          id?: string
+          item_code: string
+          source?: string | null
+          total_price?: number | null
+          unit: string
+          unit_price?: number | null
+        }
+        Update: {
+          category?: string
+          coefficient?: number | null
+          composition_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          item_code?: string
+          source?: string | null
+          total_price?: number | null
+          unit?: string
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sinapi_composition_items_composition_id_fkey"
+            columns: ["composition_id"]
+            isOneToOne: false
+            referencedRelation: "sinapi_compositions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sinapi_compositions: {
+        Row: {
+          bdi_percentage: number | null
+          code: string
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          total_value: number | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          bdi_percentage?: number | null
+          code: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          total_value?: number | null
+          unit: string
+          updated_at?: string
+        }
+        Update: {
+          bdi_percentage?: number | null
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          total_value?: number | null
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
