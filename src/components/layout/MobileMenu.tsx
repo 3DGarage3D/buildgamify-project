@@ -15,7 +15,8 @@ import {
   LogOut,
   Settings,
   User,
-  X
+  X,
+  BookOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -70,6 +71,12 @@ const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
         { name: "Classificação", href: "/leaderboard", icon: Trophy },
         { name: "Orçamento", href: "/budget", icon: FileSpreadsheet },
         { name: "Relatórios", href: "/reports", icon: BarChart3 },
+      ]
+    },
+    {
+      title: "Ajuda",
+      items: [
+        { name: "Manual do Sistema", href: "/manual", icon: BookOpen },
       ]
     }
   ];

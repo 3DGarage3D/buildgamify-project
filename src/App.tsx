@@ -23,6 +23,7 @@ const Inventory = lazy(() => import("./pages/Inventory"));
 const Reports = lazy(() => import("./pages/Reports"));
 const Budget = lazy(() => import("./pages/Budget"));
 const Production = lazy(() => import("./pages/Production"));
+const Manual = lazy(() => import("./pages/Manual"));
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => {
                     <Route path="/reports" element={<ProtectedRoute allowedRoles={["admin", "financeiro"]}><PageTransition><Reports /></PageTransition></ProtectedRoute>} />
                     <Route path="/budget" element={<ProtectedRoute allowedRoles={["admin", "financeiro"]}><PageTransition><Budget /></PageTransition></ProtectedRoute>} />
                     <Route path="/production" element={<ProtectedRoute><PageTransition><Production /></PageTransition></ProtectedRoute>} />
+                    <Route path="/manual" element={<ProtectedRoute><PageTransition><Manual /></PageTransition></ProtectedRoute>} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>

@@ -8,7 +8,8 @@ import {
   BarChart3,
   Boxes,
   CalendarDays,
-  Building
+  Building,
+  BookOpen
 } from "lucide-react";
 
 // Define the task status and priority types
@@ -288,5 +289,6 @@ export const dashboardLinks: NavLink[] = [
   { name: "Classificação", icon: Trophy, href: "/leaderboard", description: "Conferir ranking e recompensas" },
   { name: "Calendário", icon: CalendarDays, href: "/calendar", description: "Acompanhar cronograma de produção" },
   { name: "Estoque", icon: Boxes, href: "/inventory", description: "Gerenciar painéis e materiais" },
-  { name: "Relatórios", icon: BarChart3, href: "/reports", description: "Análise de produção e métricas" }
+  { name: "Relatórios", icon: BarChart3, href: "/reports", description: "Análise de produção e métricas" },
+  { name: "Manual", icon: BookOpen, href: "/manual", description: "Guia completo de funcionalidades" }
 ];
